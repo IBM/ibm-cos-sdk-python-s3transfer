@@ -11,7 +11,7 @@ VERSION_RE = re.compile(r'''__version__ = ['"]([0-9.]+)['"]''')
 
 
 requires = [
-    'botocore>=1.3.0,<2.0.0',
+    'ibm-cos-sdk-core>=1.0.0,==1.0.*',
 ]
 
 
@@ -27,13 +27,13 @@ def get_version():
 
 
 setup(
-    name='s3transfer',
+    name='ibm-cos-sdk-s3transfer',
     version=get_version(),
-    description='An Amazon S3 Transfer Manager',
+    description='IBM S3 Transfer Manager',
     long_description=open('README.rst').read(),
-    author='Amazon Web Services',
-    author_email='kyknapp1@gmail.com',
-    url='https://github.com/boto/s3transfer',
+    author='IBM',
+    author_email='',
+    url='https://github.com/ibm/ibm-cos-sdk-python-s3transfer',
     packages=find_packages(exclude=['tests*']),
     include_package_data=True,
     install_requires=requires,
