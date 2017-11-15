@@ -15,3 +15,11 @@ Features
 Features
 --------
 * Added support for Dev version (setup.py)
+
+1.1.0
+=====
+
+Features
+--------
+* Added support for Key Protect
+
