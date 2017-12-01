@@ -11,8 +11,8 @@
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 from tests import unittest
-from s3transfer.exceptions import InvalidSubscriberMethodError
-from s3transfer.subscribers import BaseSubscriber
+from ibm_s3transfer.exceptions import InvalidSubscriberMethodError
+from ibm_s3transfer.subscribers import BaseSubscriber
 
 
 class ExtraMethodsSubscriber(BaseSubscriber):

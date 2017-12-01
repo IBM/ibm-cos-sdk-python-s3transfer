@@ -14,11 +14,11 @@ import time
 
 from concurrent.futures import CancelledError
 
-from botocore.compat import six
+from ibm_botocore.compat import six
 from tests import skip_if_using_serial_implementation
 from tests import RecordingSubscriber, NonSeekableReader
 from tests.integration import BaseTransferManagerIntegTest
-from s3transfer.manager import TransferConfig
+from ibm_s3transfer.manager import TransferConfig
 
 
 class TestUpload(BaseTransferManagerIntegTest):

@@ -11,16 +11,16 @@
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 from io import RawIOBase
-from botocore.awsrequest import create_request_object
+from ibm_botocore.awsrequest import create_request_object
 import mock
 
 from tests import skip_if_using_serial_implementation
 from tests import StubbedClientTest
-from s3transfer.exceptions import CancelledError
-from s3transfer.exceptions import FatalError
-from s3transfer.futures import BaseExecutor
-from s3transfer.manager import TransferManager
-from s3transfer.manager import TransferConfig
+from ibm_s3transfer.exceptions import CancelledError
+from ibm_s3transfer.exceptions import FatalError
+from ibm_s3transfer.futures import BaseExecutor
+from ibm_s3transfer.manager import TransferManager
+from ibm_s3transfer.manager import TransferConfig
 
 
 class ArbitraryException(Exception):

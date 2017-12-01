@@ -13,7 +13,7 @@
 import copy
 import logging
 
-from s3transfer.utils import get_callbacks
+from ibm_s3transfer.utils import get_callbacks
 
 
 logger = logging.getLogger(__name__)
@@ -29,7 +29,7 @@ class Task(object):
                  pending_main_kwargs=None, done_callbacks=None,
                  is_final=False):
         """
-        :type transfer_coordinator: s3transfer.futures.TransferCoordinator
+        :type transfer_coordinator: ibm_s3transfer.futures.TransferCoordinator
         :param transfer_coordinator: The context associated to the
             TransferFuture for which this Task is associated with.
 
@@ -232,7 +232,7 @@ class SubmissionTask(Task):
     """
     def _main(self, transfer_future, **kwargs):
         """
-        :type transfer_future: s3transfer.futures.TransferFuture
+        :type transfer_future: ibm_s3transfer.futures.TransferFuture
         :param transfer_future: The transfer future associated with the
             transfer request that tasks are being submitted for
 
@@ -280,7 +280,7 @@ class SubmissionTask(Task):
     def _submit(self, transfer_future, **kwargs):
         """The submition method to be implemented
 
-        :type transfer_future: s3transfer.futures.TransferFuture
+        :type transfer_future: ibm_s3transfer.futures.TransferFuture
         :param transfer_future: The transfer future associated with the
             transfer request that tasks are being submitted for
 

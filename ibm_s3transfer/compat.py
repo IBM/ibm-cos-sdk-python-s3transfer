@@ -16,7 +16,7 @@ import os
 import errno
 import socket
 
-from botocore.compat import six
+from ibm_botocore.compat import six
 
 
 if sys.platform.startswith('win'):

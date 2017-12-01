@@ -18,25 +18,25 @@ import threading
 import heapq
 
 
-from botocore.compat import six
-from botocore.exceptions import IncompleteReadError
-from botocore.vendored.requests.packages.urllib3.exceptions import \
+from ibm_botocore.compat import six
+from ibm_botocore.exceptions import IncompleteReadError
+from ibm_botocore.vendored.requests.packages.urllib3.exceptions import \
     ReadTimeoutError
 
-from s3transfer.compat import SOCKET_ERROR
-from s3transfer.compat import seekable
-from s3transfer.exceptions import RetriesExceededError
-from s3transfer.futures import IN_MEMORY_DOWNLOAD_TAG
-from s3transfer.utils import random_file_extension
-from s3transfer.utils import get_callbacks
-from s3transfer.utils import invoke_progress_callbacks
-from s3transfer.utils import calculate_range_parameter
-from s3transfer.utils import FunctionContainer
-from s3transfer.utils import CountCallbackInvoker
-from s3transfer.utils import StreamReaderProgress
-from s3transfer.utils import DeferredOpenFile
-from s3transfer.tasks import Task
-from s3transfer.tasks import SubmissionTask
+from ibm_s3transfer.compat import SOCKET_ERROR
+from ibm_s3transfer.compat import seekable
+from ibm_s3transfer.exceptions import RetriesExceededError
+from ibm_s3transfer.futures import IN_MEMORY_DOWNLOAD_TAG
+from ibm_s3transfer.utils import random_file_extension
+from ibm_s3transfer.utils import get_callbacks
+from ibm_s3transfer.utils import invoke_progress_callbacks
+from ibm_s3transfer.utils import calculate_range_parameter
+from ibm_s3transfer.utils import FunctionContainer
+from ibm_s3transfer.utils import CountCallbackInvoker
+from ibm_s3transfer.utils import StreamReaderProgress
+from ibm_s3transfer.utils import DeferredOpenFile
+from ibm_s3transfer.tasks import Task
+from ibm_s3transfer.tasks import SubmissionTask
 
 
 logger = logging.getLogger(__name__)
@@ -81,7 +81,7 @@ class DownloadOutputManager(object):
     def get_download_task_tag(self):
         """Get the tag (if any) to associate all GetObjectTasks
 
-        :rtype: s3transfer.futures.TaskTag
+        :rtype: ibm_s3transfer.futures.TaskTag
         :returns: The tag to associate all GetObjectTasks with
         """
         return None
@@ -89,7 +89,7 @@ class DownloadOutputManager(object):
     def get_fileobj_for_io_writes(self, transfer_future):
         """Get file-like object to use for io writes in the io executor
 
-        :type transfer_future: s3transfer.futures.TransferFuture
+        :type transfer_future: ibm_s3transfer.futures.TransferFuture
         :param transfer_future: The future associated with upload request
 
         returns: A file-like object to write to
@@ -144,7 +144,7 @@ class DownloadOutputManager(object):
         needs a final task for it to signal that the transfer is done and
         all done callbacks can be run.
 
-        :rtype: s3transfer.tasks.Task
+        :rtype: ibm_s3transfer.tasks.Task
         :returns: A final task to completed in the io executor
         """
         raise NotImplementedError(
@@ -291,10 +291,10 @@ class DownloadSubmissionTask(SubmissionTask):
     def _get_download_output_manager_cls(self, transfer_future, osutil):
         """Retrieves a class for managing output for a download
 
-        :type transfer_future: s3transfer.futures.TransferFuture
+        :type transfer_future: ibm_s3transfer.futures.TransferFuture
         :param transfer_future: The transfer future for the request
 
-        :type osutil: s3transfer.utils.OSUtils
+        :type osutil: ibm_s3transfer.utils.OSUtils
         :param osutil: The os utility associated to the transfer
 
         :rtype: class of DownloadOutputManager
@@ -321,22 +321,22 @@ class DownloadSubmissionTask(SubmissionTask):
         """
         :param client: The client associated with the transfer manager
 
-        :type config: s3transfer.manager.TransferConfig
+        :type config: ibm_s3transfer.manager.TransferConfig
         :param config: The transfer config associated with the transfer
             manager
 
-        :type osutil: s3transfer.utils.OSUtil
+        :type osutil: ibm_s3transfer.utils.OSUtil
         :param osutil: The os utility associated to the transfer manager
 
-        :type request_executor: s3transfer.futures.BoundedExecutor
+        :type request_executor: ibm_s3transfer.futures.BoundedExecutor
         :param request_executor: The request executor associated with the
             transfer manager
 
-        :type io_executor: s3transfer.futures.BoundedExecutor
+        :type io_executor: ibm_s3transfer.futures.BoundedExecutor
         :param io_executor: The io executor associated with the
             transfer manager
 
-        :type transfer_future: s3transfer.futures.TransferFuture
+        :type transfer_future: ibm_s3transfer.futures.TransferFuture
         :param transfer_future: The transfer future associated with the
             transfer request that tasks are being submitted for
         """

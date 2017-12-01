@@ -12,8 +12,8 @@
 # language governing permissions and limitations under the License.
 from tests import BaseTaskTest
 from tests import RecordingSubscriber
-from s3transfer.copies import CopyObjectTask
-from s3transfer.copies import CopyPartTask
+from ibm_s3transfer.copies import CopyObjectTask
+from ibm_s3transfer.copies import CopyPartTask
 
 
 class BaseCopyTaskTest(BaseTaskTest):

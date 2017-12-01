@@ -14,27 +14,27 @@ import copy
 import logging
 import threading
 
-from botocore.compat import six
+from ibm_botocore.compat import six
 
-from s3transfer.utils import get_callbacks
-from s3transfer.utils import disable_upload_callbacks
-from s3transfer.utils import enable_upload_callbacks
-from s3transfer.utils import CallArgs
-from s3transfer.utils import OSUtils
-from s3transfer.utils import TaskSemaphore
-from s3transfer.utils import SlidingWindowSemaphore
-from s3transfer.exceptions import CancelledError
-from s3transfer.exceptions import FatalError
-from s3transfer.futures import IN_MEMORY_DOWNLOAD_TAG
-from s3transfer.futures import IN_MEMORY_UPLOAD_TAG
-from s3transfer.futures import BoundedExecutor
-from s3transfer.futures import TransferFuture
-from s3transfer.futures import TransferMeta
-from s3transfer.futures import TransferCoordinator
-from s3transfer.download import DownloadSubmissionTask
-from s3transfer.upload import UploadSubmissionTask
-from s3transfer.copies import CopySubmissionTask
-from s3transfer.delete import DeleteSubmissionTask
+from ibm_s3transfer.utils import get_callbacks
+from ibm_s3transfer.utils import disable_upload_callbacks
+from ibm_s3transfer.utils import enable_upload_callbacks
+from ibm_s3transfer.utils import CallArgs
+from ibm_s3transfer.utils import OSUtils
+from ibm_s3transfer.utils import TaskSemaphore
+from ibm_s3transfer.utils import SlidingWindowSemaphore
+from ibm_s3transfer.exceptions import CancelledError
+from ibm_s3transfer.exceptions import FatalError
+from ibm_s3transfer.futures import IN_MEMORY_DOWNLOAD_TAG
+from ibm_s3transfer.futures import IN_MEMORY_UPLOAD_TAG
+from ibm_s3transfer.futures import BoundedExecutor
+from ibm_s3transfer.futures import TransferFuture
+from ibm_s3transfer.futures import TransferMeta
+from ibm_s3transfer.futures import TransferCoordinator
+from ibm_s3transfer.download import DownloadSubmissionTask
+from ibm_s3transfer.upload import UploadSubmissionTask
+from ibm_s3transfer.copies import CopySubmissionTask
+from ibm_s3transfer.delete import DeleteSubmissionTask
 
 KB = 1024
 MB = KB * KB
@@ -96,9 +96,9 @@ class TransferConfig(object):
             down the data from s3 (i.e. socket errors and read timeouts that
             occur after recieving an OK response from s3).
             Other retryable exceptions such as throttling errors and 5xx errors
-            are already retried by botocore (this default is 5). The
+            are already retried by ibm_botocore (this default is 5). The
             ``num_download_attempts`` does not take into account the
-            number of exceptions retried by botocore.
+            number of exceptions retried by ibm_botocore.
 
         :param max_in_memory_upload_chunks: The number of chunks that can
             be stored in memory at a time for all ongoing upload requests.
@@ -203,7 +203,7 @@ class TransferManager(object):
         :param osutil: OSUtils object to use for os-related behavior when
             using with transfer manager.
 
-        :type executor_cls: s3transfer.futures.BaseExecutor
+        :type executor_cls: ibm_s3transfer.futures.BaseExecutor
         :param executor_cls: The class of executor to use with the transfer
             manager. By default, concurrent.futures.ThreadPoolExecutor is used.
         """
@@ -267,12 +267,12 @@ class TransferManager(object):
         :param extra_args: Extra arguments that may be passed to the
             client operation
 
-        :type subscribers: list(s3transfer.subscribers.BaseSubscriber)
+        :type subscribers: list(ibm_s3transfer.subscribers.BaseSubscriber)
         :param subscribers: The list of subscribers to be invoked in the
             order provided based on the event emit during the process of
             the transfer request.
 
-        :rtype: s3transfer.futures.TransferFuture
+        :rtype: ibm_s3transfer.futures.TransferFuture
         :returns: Transfer future representing the upload
         """
         if extra_args is None:
@@ -303,12 +303,12 @@ class TransferManager(object):
         :param extra_args: Extra arguments that may be passed to the
             client operation
 
-        :type subscribers: list(s3transfer.subscribers.BaseSubscriber)
+        :type subscribers: list(ibm_s3transfer.subscribers.BaseSubscriber)
         :param subscribers: The list of subscribers to be invoked in the
             order provided based on the event emit during the process of
             the transfer request.
 
-        :rtype: s3transfer.futures.TransferFuture
+        :rtype: ibm_s3transfer.futures.TransferFuture
         :returns: Transfer future representing the download
         """
         if extra_args is None:
@@ -349,14 +349,14 @@ class TransferManager(object):
             order provided based on the event emit during the process of
             the transfer request.
 
-        :type source_client: botocore or boto3 Client
+        :type source_client: ibm_botocore or ibm_boto3 Client
         :param source_client: The client to be used for operation that
             may happen at the source object. For example, this client is
             used for the head_object that determines the size of the copy.
             If no client is provided, the transfer manager's client is used
             as the client for the source object.
 
-        :rtype: s3transfer.futures.TransferFuture
+        :rtype: ibm_s3transfer.futures.TransferFuture
         :returns: Transfer future representing the copy
         """
         if extra_args is None:
@@ -391,7 +391,7 @@ class TransferManager(object):
             process of the transfer request.  Note that the ``on_progress``
             callback is not invoked during object deletion.
 
-        :rtype: s3transfer.futures.TransferFuture
+        :rtype: ibm_s3transfer.futures.TransferFuture
         :return: Transfer future representing the deletion.
 
         """
@@ -571,7 +571,7 @@ class TransferCoordinatorController(object):
     def add_transfer_coordinator(self, transfer_coordinator):
         """Adds a transfer coordinator of a transfer to be canceled if needed
 
-        :type transfer_coordinator: s3transfer.futures.TransferCoordinator
+        :type transfer_coordinator: ibm_s3transfer.futures.TransferCoordinator
         :param transfer_coordinator: The transfer coordinator for the
             particular transfer
         """
@@ -584,7 +584,7 @@ class TransferCoordinatorController(object):
         Typically, this method is invoked by the transfer coordinator itself
         to remove its self when it completes its transfer.
 
-        :type transfer_coordinator: s3transfer.futures.TransferCoordinator
+        :type transfer_coordinator: ibm_s3transfer.futures.TransferCoordinator
         :param transfer_coordinator: The transfer coordinator for the
             particular transfer
         """

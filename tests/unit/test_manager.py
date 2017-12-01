@@ -16,11 +16,11 @@ from concurrent.futures import ThreadPoolExecutor
 
 from tests import unittest
 from tests import TransferCoordinatorWithInterrupt
-from s3transfer.exceptions import CancelledError
-from s3transfer.exceptions import FatalError
-from s3transfer.futures import TransferCoordinator
-from s3transfer.manager import TransferConfig
-from s3transfer.manager import TransferCoordinatorController
+from ibm_s3transfer.exceptions import CancelledError
+from ibm_s3transfer.exceptions import FatalError
+from ibm_s3transfer.futures import TransferCoordinator
+from ibm_s3transfer.manager import TransferConfig
+from ibm_s3transfer.manager import TransferCoordinatorController
 
 
 class FutureResultException(Exception):

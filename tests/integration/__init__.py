@@ -10,13 +10,13 @@
 # distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
-import botocore.session
-from botocore.exceptions import ClientError
+import ibm_botocore.session
+from ibm_botocore.exceptions import ClientError
 
 from tests import unittest
 from tests import FileCreator
 from tests import random_bucket_name
-from s3transfer.manager import TransferManager
+from ibm_s3transfer.manager import TransferManager
 
 
 def recursive_delete(client, bucket_name):
@@ -30,12 +30,12 @@ def recursive_delete(client, bucket_name):
 
 
 class BaseTransferManagerIntegTest(unittest.TestCase):
-    """Tests for the high level s3transfer module."""
+    """Tests for the high level ibm_s3transfer module."""
 
     @classmethod
     def setUpClass(cls):
         cls.region = 'us-west-2'
-        cls.session = botocore.session.get_session()
+        cls.session = ibm_botocore.session.get_session()
         cls.client = cls.session.create_client('s3', cls.region)
         cls.bucket_name = random_bucket_name()
         cls.client.create_bucket(

@@ -20,21 +20,21 @@ from concurrent.futures import ThreadPoolExecutor
 from tests import unittest
 from tests import RecordingExecutor
 from tests import TransferCoordinatorWithInterrupt
-from s3transfer.exceptions import CancelledError
-from s3transfer.exceptions import FatalError
-from s3transfer.exceptions import TransferNotDoneError
-from s3transfer.futures import TransferFuture
-from s3transfer.futures import TransferMeta
-from s3transfer.futures import TransferCoordinator
-from s3transfer.futures import BoundedExecutor
-from s3transfer.futures import ExecutorFuture
-from s3transfer.futures import BaseExecutor
-from s3transfer.futures import NonThreadedExecutor
-from s3transfer.futures import NonThreadedExecutorFuture
-from s3transfer.tasks import Task
-from s3transfer.utils import FunctionContainer
-from s3transfer.utils import TaskSemaphore
-from s3transfer.utils import NoResourcesAvailable
+from ibm_s3transfer.exceptions import CancelledError
+from ibm_s3transfer.exceptions import FatalError
+from ibm_s3transfer.exceptions import TransferNotDoneError
+from ibm_s3transfer.futures import TransferFuture
+from ibm_s3transfer.futures import TransferMeta
+from ibm_s3transfer.futures import TransferCoordinator
+from ibm_s3transfer.futures import BoundedExecutor
+from ibm_s3transfer.futures import ExecutorFuture
+from ibm_s3transfer.futures import BaseExecutor
+from ibm_s3transfer.futures import NonThreadedExecutor
+from ibm_s3transfer.futures import NonThreadedExecutorFuture
+from ibm_s3transfer.tasks import Task
+from ibm_s3transfer.utils import FunctionContainer
+from ibm_s3transfer.utils import TaskSemaphore
+from ibm_s3transfer.utils import NoResourcesAvailable
 
 
 def return_call_args(*args, **kwargs):

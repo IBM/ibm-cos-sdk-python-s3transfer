@@ -12,7 +12,7 @@
 # language governing permissions and limitations under the License.
 from tests import RecordingSubscriber
 from tests.integration import BaseTransferManagerIntegTest
-from s3transfer.manager import TransferConfig
+from ibm_s3transfer.manager import TransferConfig
 
 
 class TestDeleteObject(BaseTransferManagerIntegTest):

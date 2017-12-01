@@ -15,19 +15,19 @@ import tempfile
 import shutil
 
 import mock
-from botocore.client import Config
-from botocore.exceptions import ClientError
-from botocore.awsrequest import AWSRequest
-from botocore.stub import ANY
+from ibm_botocore.client import Config
+from ibm_botocore.exceptions import ClientError
+from ibm_botocore.awsrequest import AWSRequest
+from ibm_botocore.stub import ANY
 
 from tests import BaseGeneralInterfaceTest
 from tests import RecordingSubscriber
 from tests import RecordingOSUtils
 from tests import NonSeekableReader
-from s3transfer.compat import six
-from s3transfer.manager import TransferManager
-from s3transfer.manager import TransferConfig
-from s3transfer.utils import ChunksizeAdjuster
+from ibm_s3transfer.compat import six
+from ibm_s3transfer.manager import TransferManager
+from ibm_s3transfer.manager import TransferConfig
+from ibm_s3transfer.utils import ChunksizeAdjuster
 
 
 class BaseUploadTest(BaseGeneralInterfaceTest):
@@ -43,7 +43,7 @@ class BaseUploadTest(BaseGeneralInterfaceTest):
         # chunksize adjuster.  Instead we need to patch out the
         # chunksize adjuster class.
         self.adjuster_patch = mock.patch(
-            's3transfer.upload.ChunksizeAdjuster',
+            'ibm_s3transfer.upload.ChunksizeAdjuster',
             lambda: ChunksizeAdjuster(min_size=1))
         self.adjuster_patch.start()
         self.config = TransferConfig(max_request_concurrency=1)

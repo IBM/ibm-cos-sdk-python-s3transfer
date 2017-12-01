@@ -10,10 +10,10 @@
 # distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
-from botocore.compat import six
+from ibm_botocore.compat import six
 
-from s3transfer.compat import accepts_kwargs
-from s3transfer.exceptions import InvalidSubscriberMethodError
+from ibm_s3transfer.compat import accepts_kwargs
+from ibm_s3transfer.exceptions import InvalidSubscriberMethodError
 
 
 class BaseSubscriber(object):
@@ -56,7 +56,7 @@ class BaseSubscriber(object):
               future.meta.provide_transfer_size() so a HeadObject would not
               need to be made for copies and downloads.
 
-        :type future: s3transfer.futures.TransferFuture
+        :type future: ibm_s3transfer.futures.TransferFuture
         :param future: The TransferFuture representing the requested transfer.
         """
         pass
@@ -68,7 +68,7 @@ class BaseSubscriber(object):
 
             * Recording and displaying progress
 
-        :type future: s3transfer.futures.TransferFuture
+        :type future: ibm_s3transfer.futures.TransferFuture
         :param future: The TransferFuture representing the requested transfer.
 
         :type bytes_transferred: int
@@ -89,7 +89,7 @@ class BaseSubscriber(object):
             * Running some task after the transfer completed like changing
               the last modified time of a downloaded file.
 
-        :type future: s3transfer.futures.TransferFuture
+        :type future: ibm_s3transfer.futures.TransferFuture
         :param future: The TransferFuture representing the requested transfer.
         """
         pass

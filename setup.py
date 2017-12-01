@@ -11,7 +11,7 @@ VERSION_RE = re.compile(r'''__version__ = ['"]([a-z0-9.]+)['"]''')
 
 
 requires = [
-    'ibm-cos-sdk-core>=1.0.0,==1.*',
+    'ibm-cos-sdk-core>=2.0.0,==2.*',
 ]
 
 
@@ -22,7 +22,7 @@ if sys.version_info[0] == 2:
 
 
 def get_version():
-    init = open(os.path.join(ROOT, 's3transfer', '__init__.py')).read()
+    init = open(os.path.join(ROOT, 'ibm_s3transfer', '__init__.py')).read()
     return VERSION_RE.search(init).group(1)
 
 

@@ -12,16 +12,16 @@
 # language governing permissions and limitations under the License.
 import math
 
-from botocore.compat import six
+from ibm_botocore.compat import six
 
-from s3transfer.compat import seekable, readable
-from s3transfer.futures import IN_MEMORY_UPLOAD_TAG
-from s3transfer.tasks import Task
-from s3transfer.tasks import SubmissionTask
-from s3transfer.tasks import CreateMultipartUploadTask
-from s3transfer.tasks import CompleteMultipartUploadTask
-from s3transfer.utils import get_callbacks
-from s3transfer.utils import DeferredOpenFile, ChunksizeAdjuster
+from ibm_s3transfer.compat import seekable, readable
+from ibm_s3transfer.futures import IN_MEMORY_UPLOAD_TAG
+from ibm_s3transfer.tasks import Task
+from ibm_s3transfer.tasks import SubmissionTask
+from ibm_s3transfer.tasks import CreateMultipartUploadTask
+from ibm_s3transfer.tasks import CompleteMultipartUploadTask
+from ibm_s3transfer.utils import get_callbacks
+from ibm_s3transfer.utils import DeferredOpenFile, ChunksizeAdjuster
 
 
 class AggregatedProgressCallback(object):
@@ -66,7 +66,7 @@ class InterruptReader(object):
     :type fileobj: file-like obj
     :param fileobj: The file-like object to read from
 
-    :type transfer_coordinator: s3transfer.futures.TransferCoordinator
+    :type transfer_coordinator: ibm_s3transfer.futures.TransferCoordinator
     :param transfer_coordinator: The transfer coordinator to use if the
         reader needs to be interrupted.
     """
@@ -149,7 +149,7 @@ class UploadInputManager(object):
     def provide_transfer_size(self, transfer_future):
         """Provides the transfer size of an upload
 
-        :type transfer_future: s3transfer.futures.TransferFuture
+        :type transfer_future: ibm_s3transfer.futures.TransferFuture
         :param transfer_future: The future associated with upload request
         """
         raise NotImplementedError('must implement provide_transfer_size()')
@@ -157,10 +157,10 @@ class UploadInputManager(object):
     def requires_multipart_upload(self, transfer_future, config):
         """Determines where a multipart upload is required
 
-        :type transfer_future: s3transfer.futures.TransferFuture
+        :type transfer_future: ibm_s3transfer.futures.TransferFuture
         :param transfer_future: The future associated with upload request
 
-        :type config: s3transfer.manager.TransferConfig
+        :type config: ibm_s3transfer.manager.TransferConfig
         :param config: The config associated to the transfer manager
 
         :rtype: boolean
@@ -172,13 +172,13 @@ class UploadInputManager(object):
     def get_put_object_body(self, transfer_future):
         """Returns the body to use for PutObject
 
-        :type transfer_future: s3transfer.futures.TransferFuture
+        :type transfer_future: ibm_s3transfer.futures.TransferFuture
         :param transfer_future: The future associated with upload request
 
-        :type config: s3transfer.manager.TransferConfig
+        :type config: ibm_s3transfer.manager.TransferConfig
         :param config: The config associated to the transfer manager
 
-        :rtype: s3transfer.utils.ReadFileChunk
+        :rtype: ibm_s3transfer.utils.ReadFileChunk
         :returns: A ReadFileChunk including all progress callbacks
             associated with the transfer future.
         """
@@ -187,13 +187,13 @@ class UploadInputManager(object):
     def yield_upload_part_bodies(self, transfer_future, chunksize):
         """Yields the part number and body to use for each UploadPart
 
-        :type transfer_future: s3transfer.futures.TransferFuture
+        :type transfer_future: ibm_s3transfer.futures.TransferFuture
         :param transfer_future: The future associated with upload request
 
         :type chunksize: int
         :param chunksize: The chunksize to use for this upload.
 
-        :rtype: int, s3transfer.utils.ReadFileChunk
+        :rtype: int, ibm_s3transfer.utils.ReadFileChunk
         :returns: Yields the part number and the ReadFileChunk including all
             progress callbacks associated with the transfer future for that
             specific yielded part.
@@ -489,7 +489,7 @@ class UploadSubmissionTask(SubmissionTask):
     def _get_upload_input_manager_cls(self, transfer_future):
         """Retieves a class for managing input for an upload based on file type
 
-        :type transfer_future: s3transfer.futures.TransferFuture
+        :type transfer_future: ibm_s3transfer.futures.TransferFuture
         :param transfer_future: The transfer future for the request
 
         :rtype: class of UploadInputManager
@@ -515,18 +515,18 @@ class UploadSubmissionTask(SubmissionTask):
         """
         :param client: The client associated with the transfer manager
 
-        :type config: s3transfer.manager.TransferConfig
+        :type config: ibm_s3transfer.manager.TransferConfig
         :param config: The transfer config associated with the transfer
             manager
 
-        :type osutil: s3transfer.utils.OSUtil
+        :type osutil: ibm_s3transfer.utils.OSUtil
         :param osutil: The os utility associated to the transfer manager
 
-        :type request_executor: s3transfer.futures.BoundedExecutor
+        :type request_executor: ibm_s3transfer.futures.BoundedExecutor
         :param request_executor: The request executor associated with the
             transfer manager
 
-        :type transfer_future: s3transfer.futures.TransferFuture
+        :type transfer_future: ibm_s3transfer.futures.TransferFuture
         :param transfer_future: The transfer future associated with the
             transfer request that tasks are being submitted for
         """

@@ -11,7 +11,7 @@
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 from tests import BaseGeneralInterfaceTest
-from s3transfer.manager import TransferManager
+from ibm_s3transfer.manager import TransferManager
 
 
 class TestDeleteObject(BaseGeneralInterfaceTest):
@@ -45,7 +45,7 @@ class TestDeleteObject(BaseGeneralInterfaceTest):
         """A list of stubbed responses that will cause the request to succeed
 
         The elements of this list is a dictionary that will be used as key
-        word arguments to botocore.Stubber.add_response(). For example::
+        word arguments to ibm_botocore.Stubber.add_response(). For example::
 
             [{'method': 'put_object', 'service_response': {}}]
         """

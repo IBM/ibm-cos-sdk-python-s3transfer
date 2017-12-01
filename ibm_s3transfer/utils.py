@@ -22,8 +22,8 @@ import threading
 import io
 from collections import defaultdict
 
-from s3transfer.compat import rename_file
-from s3transfer.compat import seekable
+from ibm_s3transfer.compat import rename_file
+from ibm_s3transfer.compat import seekable
 
 
 MAX_PARTS = 10000
@@ -83,7 +83,7 @@ def calculate_range_parameter(part_size, part_index, num_parts,
 def get_callbacks(transfer_future, callback_type):
     """Retrieves callbacks from a subscriber
 
-    :type transfer_future: s3transfer.futures.TransferFuture
+    :type transfer_future: ibm_s3transfer.futures.TransferFuture
     :param transfer_future: The transfer future the subscriber is associated
         to.
 

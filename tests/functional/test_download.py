@@ -16,7 +16,7 @@ import tempfile
 import shutil
 import glob
 
-from botocore.exceptions import ClientError
+from ibm_botocore.exceptions import ClientError
 
 from tests import StreamWithError
 from tests import FileSizeProvider
@@ -26,12 +26,12 @@ from tests import NonSeekableWriter
 from tests import BaseGeneralInterfaceTest
 from tests import skip_if_windows
 from tests import skip_if_using_serial_implementation
-from s3transfer.compat import six
-from s3transfer.compat import SOCKET_ERROR
-from s3transfer.exceptions import RetriesExceededError
-from s3transfer.manager import TransferManager
-from s3transfer.manager import TransferConfig
-from s3transfer.download import GetObjectTask
+from ibm_s3transfer.compat import six
+from ibm_s3transfer.compat import SOCKET_ERROR
+from ibm_s3transfer.exceptions import RetriesExceededError
+from ibm_s3transfer.manager import TransferManager
+from ibm_s3transfer.manager import TransferConfig
+from ibm_s3transfer.download import GetObjectTask
 
 
 class BaseDownloadTest(BaseGeneralInterfaceTest):

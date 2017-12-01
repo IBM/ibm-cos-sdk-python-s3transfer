@@ -21,26 +21,26 @@ import io
 from tests import unittest
 from tests import RecordingSubscriber
 from tests import NonSeekableWriter
-from s3transfer.compat import six
-from s3transfer.futures import TransferFuture
-from s3transfer.futures import TransferMeta
-from s3transfer.utils import get_callbacks
-from s3transfer.utils import random_file_extension
-from s3transfer.utils import invoke_progress_callbacks
-from s3transfer.utils import calculate_range_parameter
-from s3transfer.utils import CallArgs
-from s3transfer.utils import FunctionContainer
-from s3transfer.utils import CountCallbackInvoker
-from s3transfer.utils import OSUtils
-from s3transfer.utils import DeferredOpenFile
-from s3transfer.utils import ReadFileChunk
-from s3transfer.utils import StreamReaderProgress
-from s3transfer.utils import TaskSemaphore
-from s3transfer.utils import SlidingWindowSemaphore
-from s3transfer.utils import NoResourcesAvailable
-from s3transfer.utils import ChunksizeAdjuster
-from s3transfer.utils import MIN_UPLOAD_CHUNKSIZE, MAX_SINGLE_UPLOAD_SIZE
-from s3transfer.utils import MAX_PARTS
+from ibm_s3transfer.compat import six
+from ibm_s3transfer.futures import TransferFuture
+from ibm_s3transfer.futures import TransferMeta
+from ibm_s3transfer.utils import get_callbacks
+from ibm_s3transfer.utils import random_file_extension
+from ibm_s3transfer.utils import invoke_progress_callbacks
+from ibm_s3transfer.utils import calculate_range_parameter
+from ibm_s3transfer.utils import CallArgs
+from ibm_s3transfer.utils import FunctionContainer
+from ibm_s3transfer.utils import CountCallbackInvoker
+from ibm_s3transfer.utils import OSUtils
+from ibm_s3transfer.utils import DeferredOpenFile
+from ibm_s3transfer.utils import ReadFileChunk
+from ibm_s3transfer.utils import StreamReaderProgress
+from ibm_s3transfer.utils import TaskSemaphore
+from ibm_s3transfer.utils import SlidingWindowSemaphore
+from ibm_s3transfer.utils import NoResourcesAvailable
+from ibm_s3transfer.utils import ChunksizeAdjuster
+from ibm_s3transfer.utils import MIN_UPLOAD_CHUNKSIZE, MAX_SINGLE_UPLOAD_SIZE
+from ibm_s3transfer.utils import MAX_PARTS
 
 
 class TestGetCallbacks(unittest.TestCase):

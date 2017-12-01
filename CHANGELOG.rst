@@ -23,3 +23,9 @@ Features
 --------
 * Added support for Key Protect
 
+2.0.0
+=====
+
+Features
+--------
+* Namespace changes

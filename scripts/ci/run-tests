@@ -16,9 +16,9 @@ def run(command, env=None):
     return check_call(command, shell=True, env=env)
 
 
-run('nosetests --with-coverage --cover-erase --cover-package s3transfer '
+run('nosetests --with-coverage --cover-erase --cover-package ibm_s3transfer '
     '--with-xunit --cover-xml -v unit/ functional/')
 
-# Run the serial implementation of s3transfer
+# Run the serial implementation of ibm_s3transfer
 os.environ['USE_SERIAL_EXECUTOR'] = 'True'
 run('nosetests -v functional/', env=os.environ)

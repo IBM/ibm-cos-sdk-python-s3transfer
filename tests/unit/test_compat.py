@@ -14,10 +14,10 @@ import os
 import tempfile
 import shutil
 
-from botocore.compat import six
+from ibm_botocore.compat import six
 
 from tests import unittest
-from s3transfer.compat import seekable, readable
+from ibm_s3transfer.compat import seekable, readable
 
 
 class ErrorRaisingSeekWrapper(object):

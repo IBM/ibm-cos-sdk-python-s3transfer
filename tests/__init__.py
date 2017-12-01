@@ -23,23 +23,23 @@ try:
     import unittest2 as unittest
 except ImportError:
     import unittest
-import botocore.session
-from botocore.stub import Stubber
-from botocore.compat import six
+import ibm_botocore.session
+from ibm_botocore.stub import Stubber
+from ibm_botocore.compat import six
 
-from s3transfer.manager import TransferConfig
-from s3transfer.futures import IN_MEMORY_UPLOAD_TAG
-from s3transfer.futures import IN_MEMORY_DOWNLOAD_TAG
-from s3transfer.futures import TransferCoordinator
-from s3transfer.futures import TransferMeta
-from s3transfer.futures import TransferFuture
-from s3transfer.futures import BoundedExecutor
-from s3transfer.futures import NonThreadedExecutor
-from s3transfer.subscribers import BaseSubscriber
-from s3transfer.utils import OSUtils
-from s3transfer.utils import CallArgs
-from s3transfer.utils import TaskSemaphore
-from s3transfer.utils import SlidingWindowSemaphore
+from ibm_s3transfer.manager import TransferConfig
+from ibm_s3transfer.futures import IN_MEMORY_UPLOAD_TAG
+from ibm_s3transfer.futures import IN_MEMORY_DOWNLOAD_TAG
+from ibm_s3transfer.futures import TransferCoordinator
+from ibm_s3transfer.futures import TransferMeta
+from ibm_s3transfer.futures import TransferFuture
+from ibm_s3transfer.futures import BoundedExecutor
+from ibm_s3transfer.futures import NonThreadedExecutor
+from ibm_s3transfer.subscribers import BaseSubscriber
+from ibm_s3transfer.utils import OSUtils
+from ibm_s3transfer.utils import CallArgs
+from ibm_s3transfer.utils import TaskSemaphore
+from ibm_s3transfer.utils import SlidingWindowSemaphore
 
 
 ORIGINAL_EXECUTOR_CLS = BoundedExecutor.EXECUTOR_CLS
@@ -77,7 +77,7 @@ def md5_checksum(filename):
     return checksum.hexdigest()
 
 
-def random_bucket_name(prefix='s3transfer', num_chars=10):
+def random_bucket_name(prefix='ibm_s3transfer', num_chars=10):
     base = string.ascii_lowercase + string.digits
     random_bytes = bytearray(os.urandom(num_chars))
     return prefix + ''.join([base[b % len(base)] for b in random_bytes])
@@ -265,7 +265,7 @@ class RecordingExecutor(object):
 
 class StubbedClientTest(unittest.TestCase):
     def setUp(self):
-        self.session = botocore.session.get_session()
+        self.session = ibm_botocore.session.get_session()
         self.region = 'us-west-2'
         self.client = self.session.create_client(
             's3', self.region, aws_access_key_id='foo',
@@ -356,7 +356,7 @@ class BaseGeneralInterfaceTest(StubbedClientTest):
         """A list of stubbed responses that will cause the request to succeed
 
         The elements of this list is a dictionary that will be used as key
-        word arguments to botocore.Stubber.add_response(). For example::
+        word arguments to ibm_botocore.Stubber.add_response(). For example::
 
             [{'method': 'put_object', 'service_response': {}}]
         """

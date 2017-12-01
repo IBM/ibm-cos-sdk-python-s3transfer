@@ -20,7 +20,7 @@ uploads/downloads.  It handles several things for the user:
 * Uploading/downloading a file in parallel
 * Throttling based on max bandwidth
 * Progress callbacks to monitor transfers
-* Retries.  While botocore handles retries for streaming uploads,
+* Retries.  While ibm_botocore handles retries for streaming uploads,
   it is not possible for it to handle retries for streaming
   downloads.  This module handles retries for both cases so
   you don't need to implement any retry logic yourself.
@@ -47,7 +47,7 @@ The simplest way to use this module is:
 
 .. code-block:: python
 
-    client = boto3.client('s3', 'us-west-2')
+    client = ibm_boto3.client('s3', 'us-west-2')
     transfer = S3Transfer(client)
     # Upload /tmp/myfile to s3://bucket/key
     transfer.upload_file('/tmp/myfile', 'bucket', 'key')
@@ -112,7 +112,7 @@ transfer.  For example:
 
 .. code-block:: python
 
-    client = boto3.client('s3', 'us-west-2')
+    client = ibm_boto3.client('s3', 'us-west-2')
     config = TransferConfig(
         multipart_threshold=8 * 1024 * 1024,
         max_concurrency=10,
@@ -133,17 +133,17 @@ import random
 import string
 import concurrent.futures
 
-from botocore.compat import six
-from botocore.vendored.requests.packages.urllib3.exceptions import \
+from ibm_botocore.compat import six
+from ibm_botocore.vendored.requests.packages.urllib3.exceptions import \
     ReadTimeoutError
-from botocore.exceptions import IncompleteReadError
+from ibm_botocore.exceptions import IncompleteReadError
 
-import s3transfer.compat
-from s3transfer.exceptions import RetriesExceededError, S3UploadFailedError
+import ibm_s3transfer.compat
+from ibm_s3transfer.exceptions import RetriesExceededError, S3UploadFailedError
 
 
 __author__ = 'IBM'
-__version__ = '1.1.1.dev1'
+__version__ = '2.0.0'
 
 
 class NullHandler(logging.Handler):
@@ -347,7 +347,7 @@ class OSUtils(object):
             pass
 
     def rename_file(self, current_filename, new_filename):
-        s3transfer.compat.rename_file(current_filename, new_filename)
+        ibm_s3transfer.compat.rename_file(current_filename, new_filename)
 
 
 class MultipartUploader(object):

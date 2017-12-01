@@ -18,16 +18,16 @@ from tests import unittest
 from tests import RecordingSubscriber
 from tests import BaseTaskTest
 from tests import BaseSubmissionTaskTest
-from s3transfer.futures import TransferCoordinator
-from s3transfer.futures import BoundedExecutor
-from s3transfer.subscribers import BaseSubscriber
-from s3transfer.tasks import Task
-from s3transfer.tasks import SubmissionTask
-from s3transfer.tasks import CreateMultipartUploadTask
-from s3transfer.tasks import CompleteMultipartUploadTask
-from s3transfer.utils import get_callbacks
-from s3transfer.utils import CallArgs
-from s3transfer.utils import FunctionContainer
+from ibm_s3transfer.futures import TransferCoordinator
+from ibm_s3transfer.futures import BoundedExecutor
+from ibm_s3transfer.subscribers import BaseSubscriber
+from ibm_s3transfer.tasks import Task
+from ibm_s3transfer.tasks import SubmissionTask
+from ibm_s3transfer.tasks import CreateMultipartUploadTask
+from ibm_s3transfer.tasks import CompleteMultipartUploadTask
+from ibm_s3transfer.utils import get_callbacks
+from ibm_s3transfer.utils import CallArgs
+from ibm_s3transfer.utils import FunctionContainer
 
 
 class TaskFailureException(Exception):

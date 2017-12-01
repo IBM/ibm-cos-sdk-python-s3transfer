@@ -16,7 +16,7 @@ import tempfile
 import shutil
 import math
 
-from botocore.stub import ANY
+from ibm_botocore.stub import ANY
 
 from tests import unittest
 from tests import BaseTaskTest
@@ -25,20 +25,20 @@ from tests import FileSizeProvider
 from tests import RecordingSubscriber
 from tests import RecordingExecutor
 from tests import NonSeekableReader
-from s3transfer.compat import six
-from s3transfer.futures import IN_MEMORY_UPLOAD_TAG
-from s3transfer.manager import TransferConfig
-from s3transfer.upload import AggregatedProgressCallback
-from s3transfer.upload import InterruptReader
-from s3transfer.upload import UploadFilenameInputManager
-from s3transfer.upload import UploadSeekableInputManager
-from s3transfer.upload import UploadNonSeekableInputManager
-from s3transfer.upload import UploadSubmissionTask
-from s3transfer.upload import PutObjectTask
-from s3transfer.upload import UploadPartTask
-from s3transfer.utils import CallArgs
-from s3transfer.utils import OSUtils
-from s3transfer.utils import MIN_UPLOAD_CHUNKSIZE
+from ibm_s3transfer.compat import six
+from ibm_s3transfer.futures import IN_MEMORY_UPLOAD_TAG
+from ibm_s3transfer.manager import TransferConfig
+from ibm_s3transfer.upload import AggregatedProgressCallback
+from ibm_s3transfer.upload import InterruptReader
+from ibm_s3transfer.upload import UploadFilenameInputManager
+from ibm_s3transfer.upload import UploadSeekableInputManager
+from ibm_s3transfer.upload import UploadNonSeekableInputManager
+from ibm_s3transfer.upload import UploadSubmissionTask
+from ibm_s3transfer.upload import PutObjectTask
+from ibm_s3transfer.upload import UploadPartTask
+from ibm_s3transfer.utils import CallArgs
+from ibm_s3transfer.utils import OSUtils
+from ibm_s3transfer.utils import MIN_UPLOAD_CHUNKSIZE
 
 
 class InterruptionError(Exception):

@@ -13,13 +13,13 @@
 import copy
 import math
 
-from s3transfer.tasks import Task
-from s3transfer.tasks import SubmissionTask
-from s3transfer.tasks import CreateMultipartUploadTask
-from s3transfer.tasks import CompleteMultipartUploadTask
-from s3transfer.utils import get_callbacks
-from s3transfer.utils import calculate_range_parameter
-from s3transfer.utils import ChunksizeAdjuster
+from ibm_s3transfer.tasks import Task
+from ibm_s3transfer.tasks import SubmissionTask
+from ibm_s3transfer.tasks import CreateMultipartUploadTask
+from ibm_s3transfer.tasks import CompleteMultipartUploadTask
+from ibm_s3transfer.utils import get_callbacks
+from ibm_s3transfer.utils import calculate_range_parameter
+from ibm_s3transfer.utils import ChunksizeAdjuster
 
 
 class CopySubmissionTask(SubmissionTask):
@@ -66,18 +66,18 @@ class CopySubmissionTask(SubmissionTask):
         """
         :param client: The client associated with the transfer manager
 
-        :type config: s3transfer.manager.TransferConfig
+        :type config: ibm_s3transfer.manager.TransferConfig
         :param config: The transfer config associated with the transfer
             manager
 
-        :type osutil: s3transfer.utils.OSUtil
+        :type osutil: ibm_s3transfer.utils.OSUtil
         :param osutil: The os utility associated to the transfer manager
 
-        :type request_executor: s3transfer.futures.BoundedExecutor
+        :type request_executor: ibm_s3transfer.futures.BoundedExecutor
         :param request_executor: The request executor associated with the
             transfer manager
 
-        :type transfer_future: s3transfer.futures.TransferFuture
+        :type transfer_future: ibm_s3transfer.futures.TransferFuture
         :param transfer_future: The transfer future associated with the
             transfer request that tasks are being submitted for
         """

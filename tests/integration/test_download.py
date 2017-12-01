@@ -22,7 +22,7 @@ from tests import skip_if_using_serial_implementation
 from tests import RecordingSubscriber
 from tests import NonSeekableWriter
 from tests.integration import BaseTransferManagerIntegTest
-from s3transfer.manager import TransferConfig
+from ibm_s3transfer.manager import TransferConfig
 
 
 class TestDownload(BaseTransferManagerIntegTest):

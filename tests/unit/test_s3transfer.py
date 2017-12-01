@@ -18,19 +18,19 @@ from tests import unittest
 from contextlib import closing
 
 import mock
-from botocore.vendored import six
+from ibm_botocore.vendored import six
 from concurrent import futures
 
-from s3transfer.exceptions import RetriesExceededError
-from s3transfer.exceptions import S3UploadFailedError
-from s3transfer import ReadFileChunk, StreamReaderProgress
-from s3transfer import S3Transfer
-from s3transfer import OSUtils, TransferConfig
-from s3transfer import MultipartDownloader, MultipartUploader
-from s3transfer import ShutdownQueue
-from s3transfer import QueueShutdownError
-from s3transfer import random_file_extension
-from s3transfer import disable_upload_callbacks, enable_upload_callbacks
+from ibm_s3transfer.exceptions import RetriesExceededError
+from ibm_s3transfer.exceptions import S3UploadFailedError
+from ibm_s3transfer import ReadFileChunk, StreamReaderProgress
+from ibm_s3transfer import S3Transfer
+from ibm_s3transfer import OSUtils, TransferConfig
+from ibm_s3transfer import MultipartDownloader, MultipartUploader
+from ibm_s3transfer import ShutdownQueue
+from ibm_s3transfer import QueueShutdownError
+from ibm_s3transfer import random_file_extension
+from ibm_s3transfer import disable_upload_callbacks, enable_upload_callbacks
 
 
 class InMemoryOSLayer(OSUtils):
@@ -98,7 +98,7 @@ class TestOSUtils(unittest.TestCase):
             m.assert_called_with('myfile')
 
     def test_open_file_chunk_reader(self):
-        with mock.patch('s3transfer.ReadFileChunk') as m:
+        with mock.patch('ibm_s3transfer.ReadFileChunk') as m:
             OSUtils().open_file_chunk_reader('myfile', 0, 100, None)
             m.from_filename.assert_called_with('myfile', 0, 100,
                                                None, enable_callback=False)
@@ -119,7 +119,7 @@ class TestOSUtils(unittest.TestCase):
             remove.assert_called_with('foo')
 
     def test_rename_file(self):
-        with mock.patch('s3transfer.compat.rename_file') as rename_file:
+        with mock.patch('ibm_s3transfer.compat.rename_file') as rename_file:
             OSUtils().rename_file('foo', 'newfoo')
             rename_file.assert_called_with('foo', 'newfoo')
 
@@ -489,7 +489,7 @@ class TestS3Transfer(unittest.TestCase):
     def setUp(self):
         self.client = mock.Mock()
         self.random_file_patch = mock.patch(
-            's3transfer.random_file_extension')
+            'ibm_s3transfer.random_file_extension')
         self.random_file = self.random_file_patch.start()
         self.random_file.return_value = 'RANDOM'
 
@@ -538,7 +538,7 @@ class TestS3Transfer(unittest.TestCase):
         )
 
     def test_uses_multipart_upload_when_over_threshold(self):
-        with mock.patch('s3transfer.MultipartUploader') as uploader:
+        with mock.patch('ibm_s3transfer.MultipartUploader') as uploader:
             fake_files = {
                 'smallfile': b'foobar',
             }
@@ -552,7 +552,7 @@ class TestS3Transfer(unittest.TestCase):
                 'smallfile', 'bucket', 'key', None, {})
 
     def test_uses_multipart_download_when_over_threshold(self):
-        with mock.patch('s3transfer.MultipartDownloader') as downloader:
+        with mock.patch('ibm_s3transfer.MultipartDownloader') as downloader:
             osutil = InMemoryOSLayer({})
             over_multipart_threshold = 100 * 1024 * 1024
             transfer = S3Transfer(self.client, osutil=osutil)

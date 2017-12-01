@@ -10,14 +10,14 @@
 # distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
-from botocore.exceptions import ClientError
-from botocore.stub import Stubber
+from ibm_botocore.exceptions import ClientError
+from ibm_botocore.stub import Stubber
 
 from tests import BaseGeneralInterfaceTest
 from tests import FileSizeProvider
-from s3transfer.manager import TransferManager
-from s3transfer.manager import TransferConfig
-from s3transfer.utils import MIN_UPLOAD_CHUNKSIZE
+from ibm_s3transfer.manager import TransferManager
+from ibm_s3transfer.manager import TransferConfig
+from ibm_s3transfer.utils import MIN_UPLOAD_CHUNKSIZE
 
 
 class BaseCopyTest(BaseGeneralInterfaceTest):
