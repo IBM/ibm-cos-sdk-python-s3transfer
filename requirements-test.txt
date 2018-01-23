@@ -5,3 +5,4 @@ wheel==0.24.0
 # Note you need at least pip --version of 6.0 or
 # higher to be able to pick on these version specifiers.
 unittest2==0.5.1; python_version == '2.6'
+requests==2.18.0
