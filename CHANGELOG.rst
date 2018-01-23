@@ -29,3 +29,11 @@ Features
 Features
 --------
 * Namespace changes
+
+2.0.1
+=====
+
+Features
+--------
+* IAM Resiliency support
+
