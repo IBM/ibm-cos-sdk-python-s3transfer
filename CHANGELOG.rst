@@ -37,3 +37,10 @@ Features
 --------
 * IAM Resiliency support
 
+2.0.2
+=====
+
+Features
+--------
+* Doc updates
+
