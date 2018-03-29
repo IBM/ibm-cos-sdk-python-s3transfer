@@ -36,3 +36,14 @@ Features
 Features
 --------
 * Doc Updates
+
+1.2.0
+=====
+
+Features
+--------
+* JSON Cut + Paste support
+* Configurable retries
+* Configurable Verify SSL flag for Token Fetching
+* Doc updates
+
