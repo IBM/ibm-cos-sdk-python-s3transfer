@@ -44,7 +44,7 @@ class TestDeleteObjectTask(BaseTaskTest):
 
     def test_extra_args(self):
         self.extra_args['MFA'] = 'mfa-code'
-        self.extra_args['VersionId'] = '12345'
+        #self.extra_args['VersionId'] = '12345'
         self.stubber.add_response(
             'delete_object', service_response={},
             expected_params={
@@ -52,7 +52,7 @@ class TestDeleteObjectTask(BaseTaskTest):
                 # These extra_args should be injected into the
                 # expected params for the delete_object call.
                 'MFA': 'mfa-code',
-                'VersionId': '12345',
+                #'VersionId': '12345',
             }
         )
         task = self.get_delete_task()

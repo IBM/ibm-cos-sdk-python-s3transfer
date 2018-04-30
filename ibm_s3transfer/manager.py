@@ -148,7 +148,7 @@ class TransferConfig(object):
 
 class TransferManager(object):
     ALLOWED_DOWNLOAD_ARGS = [
-        'VersionId',
+#        'VersionId',
         'SSECustomerAlgorithm',
         'SSECustomerKey',
         'SSECustomerKeyMD5',
@@ -191,7 +191,7 @@ class TransferManager(object):
 
     ALLOWED_DELETE_ARGS = [
         'MFA',
-        'VersionId',
+#        'VersionId',
         'RequestPayer',
     ]
 
@@ -329,10 +329,8 @@ class TransferManager(object):
 
         :type copy_source: dict
         :param copy_source: The name of the source bucket, key name of the
-            source object, and optional version ID of the source object. The
-            dictionary format is:
-            ``{'Bucket': 'bucket', 'Key': 'key', 'VersionId': 'id'}``. Note
-            that the ``VersionId`` key is optional and may be omitted.
+            source object. The dictionary format is:
+            ``{'Bucket': 'bucket', 'Key': 'key'}``. 
 
         :type bucket: str
         :param bucket: The name of the bucket to copy to
