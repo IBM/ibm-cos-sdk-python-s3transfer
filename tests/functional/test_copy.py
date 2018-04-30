@@ -144,7 +144,7 @@ class BaseCopyTest(BaseGeneralInterfaceTest):
         expected_params = {
             'Bucket': 'mysourcebucket',
             'Key': 'mysourcekey',
-            'VersionId': 'mysourceversionid'
+            #'VersionId': 'mysourceversionid'
         }
 
         self.add_head_object_response(expected_params=expected_params)
