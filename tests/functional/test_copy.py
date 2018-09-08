@@ -140,7 +140,7 @@ class BaseCopyTest(BaseGeneralInterfaceTest):
         self.stubber.assert_no_pending_responses()
 
     def test_provide_copy_source_as_dict(self):
-        self.copy_source['VersionId'] = 'mysourceversionid'
+        #self.copy_source['VersionId'] = 'mysourceversionid'
         expected_params = {
             'Bucket': 'mysourcebucket',
             'Key': 'mysourcekey',
