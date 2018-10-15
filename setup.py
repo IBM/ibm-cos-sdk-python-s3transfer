@@ -2,8 +2,12 @@
 import os
 import re
 import sys
-
 from setuptools import setup, find_packages
+
+# IbmCos sdk python version check
+_valid  =  sys.version_info[:2] == (2, 7) or sys.version_info >= (3,4)
+if not _valid:
+    sys.exit("Sorry, IBM COS SDK only supports versions 2.7, 3.4, 3.5, 3.6, 3.7 of python.")
 
 
 ROOT = os.path.dirname(__file__)
@@ -14,12 +18,11 @@ requires = [
     'ibm-cos-sdk-core>=2.0.0,==2.*',
 ]
 
-
 if sys.version_info[0] == 2:
     # concurrent.futures is only in python3, so for
     # python2 we need to install the backport.
     requires.append('futures>=2.2.0,<4.0.0')
-
+    requires.append('backports.functools-lru-cache>=1.5')
 
 def get_version():
     init = open(os.path.join(ROOT, 'ibm_s3transfer', '__init__.py')).read()
@@ -37,10 +40,6 @@ setup(
     packages=find_packages(exclude=['tests*']),
     include_package_data=True,
     install_requires=requires,
-    extras_require={
-        ':python_version=="2.6" or python_version=="2.7"': [
-            'futures>=2.2.0,<4.0.0']
-    },
     license="Apache License 2.0",
     classifiers=(
         'Development Status :: 3 - Alpha',
@@ -48,12 +47,11 @@ setup(
         'Natural Language :: English',
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
     ),
 )
