@@ -99,7 +99,7 @@ to the user:
                 sys.stdout.flush()
 
 
-    transfer = S3Transfer(boto3.client('s3', 'us-west-2'))
+    transfer = S3Transfer(ibm_boto3.client('s3', 'us-west-2'))
     # Upload /tmp/myfile to s3://bucket/key and print upload progress.
     transfer.upload_file('/tmp/myfile', 'bucket', 'key',
                          callback=ProgressPercentage('/tmp/myfile'))
@@ -143,7 +143,7 @@ from ibm_s3transfer.exceptions import RetriesExceededError, S3UploadFailedError
 
 
 __author__ = 'IBM'
-__version__ = '2.3.4.dev1'
+__version__ = '2.4.0'
 
 
 class NullHandler(logging.Handler):
@@ -582,7 +582,7 @@ class TransferConfig(object):
 class S3Transfer(object):
 
     ALLOWED_DOWNLOAD_ARGS = [
-#        'VersionId',
+        #'VersionId',
         'SSECustomerAlgorithm',
         'SSECustomerKey',
         'SSECustomerKeyMD5',
@@ -609,6 +609,10 @@ class S3Transfer(object):
         'SSECustomerKey',
         'SSECustomerKeyMD5',
         'SSEKMSKeyId',
+        'RetentionExpirationDate',
+        'RetentionLegalHoldId',
+        'RetentionPeriod',
+
     ]
 
     def __init__(self, client, config=None, osutil=None):

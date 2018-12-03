@@ -139,7 +139,7 @@ class TestS3Transfers(unittest.TestCase):
 
     def create_s3_transfer(self, config=None):
         return ibm_s3transfer.S3Transfer(self.client,
-                                         config=config)
+                                            config=config)
 
     def assert_has_public_read_acl(self, response):
         grants = response['Grants']

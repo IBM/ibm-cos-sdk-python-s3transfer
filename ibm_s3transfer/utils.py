@@ -39,16 +39,16 @@ def random_file_extension(num_digits=8):
     return ''.join(random.choice(string.hexdigits) for _ in range(num_digits))
 
 
-def disable_upload_callbacks(request, operation_name, **kwargs):
+def signal_not_transferring(request, operation_name, **kwargs):
     if operation_name in ['PutObject', 'UploadPart'] and \
-            hasattr(request.body, 'disable_callback'):
-        request.body.disable_callback()
+            hasattr(request.body, 'signal_not_transferring'):
+        request.body.signal_not_transferring()
 
 
-def enable_upload_callbacks(request, operation_name, **kwargs):
+def signal_transferring(request, operation_name, **kwargs):
     if operation_name in ['PutObject', 'UploadPart'] and \
-            hasattr(request.body, 'enable_callback'):
-        request.body.enable_callback()
+            hasattr(request.body, 'signal_transferring'):
+        request.body.signal_transferring()
 
 
 def calculate_range_parameter(part_size, part_index, num_parts,
@@ -124,6 +124,24 @@ def invoke_progress_callbacks(callbacks, bytes_transferred):
     if bytes_transferred:
         for callback in callbacks:
             callback(bytes_transferred=bytes_transferred)
+
+
+def get_filtered_dict(original_dict, whitelisted_keys):
+    """Gets a dictionary filtered by whitelisted keys
+
+    :param original_dict: The original dictionary of arguments to source keys
+        and values.
+    :param whitelisted_key: A list of keys to include in the filtered
+        dictionary.
+
+    :returns: A dictionary containing key/values from the original dictionary
+        whose key was included in the whitelist
+    """
+    filtered_dict = {}
+    for key, value in original_dict.items():
+        if key in whitelisted_keys:
+            filtered_dict[key] = value
+    return filtered_dict
 
 
 class CallArgs(object):
@@ -432,6 +450,16 @@ class ReadFileChunk(object):
         if self._callbacks is not None and self._callbacks_enabled:
             invoke_progress_callbacks(self._callbacks, len(data))
         return data
+
+    def signal_transferring(self):
+        self.enable_callback()
+        if hasattr(self._fileobj, 'signal_transferring'):
+            self._fileobj.signal_transferring()
+
+    def signal_not_transferring(self):
+        self.disable_callback()
+        if hasattr(self._fileobj, 'signal_not_transferring'):
+            self._fileobj.signal_not_transferring()
 
     def enable_callback(self):
         self._callbacks_enabled = True
