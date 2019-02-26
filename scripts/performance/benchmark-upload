@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Benchmark the uploading of a file using ibm_s3transfer. You can also chose how
+Benchmark the uploading of a file using s3transfer. You can also chose how
 type of file that is uploaded (i.e. filename, seekable, nonseekable).
 
 Usage
@@ -25,7 +25,7 @@ import tempfile
 import shutil
 import subprocess
 
-from ibm_botocore.session import get_session
+from botocore.session import get_session
 
 
 TEMP_FILE = 'temp'
