@@ -23,7 +23,7 @@ import ibm_botocore.session
 from ibm_botocore.compat import six
 from ibm_botocore.client import Config
 
-import ibm_s3transfer
+import s3transfer
 
 
 urlopen = six.moves.urllib.request.urlopen
