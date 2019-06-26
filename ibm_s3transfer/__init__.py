@@ -143,7 +143,7 @@ from ibm_s3transfer.exceptions import RetriesExceededError, S3UploadFailedError
 
 
 __author__ = 'IBM'
-__version__ = '2.5.1'
+__version__ = '2.5.2.dev1'
 
 
 class NullHandler(logging.Handler):
