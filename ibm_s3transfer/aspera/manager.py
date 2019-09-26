@@ -14,7 +14,7 @@
 import os
 import time
 import json
-import ibm_botocore.vendored.requests as requests
+import requests as requests
 import logging
 import uuid
 import six

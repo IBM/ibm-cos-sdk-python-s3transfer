@@ -134,7 +134,7 @@ import string
 import concurrent.futures
 
 from ibm_botocore.compat import six
-from ibm_botocore.vendored.requests.packages.urllib3.exceptions import \
+from requests.packages.urllib3.exceptions import \
     ReadTimeoutError
 from ibm_botocore.exceptions import IncompleteReadError
 
@@ -143,7 +143,7 @@ from ibm_s3transfer.exceptions import RetriesExceededError, S3UploadFailedError
 
 
 __author__ = 'IBM'
-__version__ = '2.5.4.dev1'
+__version__ = '2.5.4'
 
 
 class NullHandler(logging.Handler):
