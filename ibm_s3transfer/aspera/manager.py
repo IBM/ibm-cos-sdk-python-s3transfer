@@ -14,7 +14,7 @@
 import os
 import time
 import json
-import requests as requests
+import requests
 import logging
 import uuid
 import six

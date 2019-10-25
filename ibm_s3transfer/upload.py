@@ -507,7 +507,7 @@ class UploadSubmissionTask(SubmissionTask):
 
 
     def _get_upload_input_manager_cls(self, transfer_future):
-        """Retieves a class for managing input for an upload based on file type
+        """Retrieves a class for managing input for an upload based on file type
 
         :type transfer_future: ibm_s3transfer.futures.TransferFuture
         :param transfer_future: The transfer future for the request

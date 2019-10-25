@@ -15,7 +15,7 @@ VERSION_RE = re.compile(r'''__version__ = ['"]([a-z0-9.]+)['"]''')
 
 
 requires = [
-    'ibm-cos-sdk-core>=2.0.0',
+    'ibm-cos-sdk-core==2.5.5',
 ]
 
 if sys.version_info[0] == 2:
