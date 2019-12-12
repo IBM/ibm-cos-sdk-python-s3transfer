@@ -196,7 +196,7 @@ class TransferManager(object):
 
     ALLOWED_DELETE_ARGS = [
         'MFA',
-        #'VersionId',
+        'VersionId',
         'RequestPayer',
     ]
 
@@ -355,7 +355,8 @@ class TransferManager(object):
         :param copy_source: The name of the source bucket, key name of the
             source object, and optional version ID of the source object. The
             dictionary format is:
-            ``{'Bucket': 'bucket', 'Key': 'key'}``. 
+            ``{'Bucket': 'bucket', 'Key': 'key', 'VersionId': 'id'}``. Note
+            that the ``VersionId`` key is optional and may be omitted.
 
         :type bucket: str
         :param bucket: The name of the bucket to copy to

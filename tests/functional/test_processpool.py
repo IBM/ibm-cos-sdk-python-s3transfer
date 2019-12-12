@@ -168,21 +168,21 @@ class TestProcessPoolDownloader(unittest.TestCase):
         self.stubbed_client.add_response(
             'head_object', {'ContentLength': len(self.remote_contents)},
             expected_params={
-                'Bucket': self.bucket, 'Key': self.key
-                #'VersionId': 'versionid'
+                'Bucket': self.bucket, 'Key': self.key,
+                'VersionId': 'versionid'
             }
         )
         self.stubbed_client.add_response(
             'get_object', {'Body': self.stream},
             expected_params={
-                'Bucket': self.bucket, 'Key': self.key
-                #'VersionId': 'versionid'
+                'Bucket': self.bucket, 'Key': self.key,
+                'VersionId': 'versionid'
             }
         )
         with self.downloader:
             self.downloader.download_file(
-                self.bucket, self.key, self.filename
-                #extra_args={'VersionId': 'versionid'}
+                self.bucket, self.key, self.filename,
+                extra_args={'VersionId': 'versionid'}
             )
         self.assert_contents(self.filename, self.remote_contents)
 

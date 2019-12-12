@@ -416,11 +416,11 @@ class TestGetObjectSubmitter(StubbedClientTest):
             expected_params={
                 'Bucket': self.bucket,
                 'Key': self.key,
-                #'VersionId': 'versionid'
+                'VersionId': 'versionid'
             }
         )
         self.add_download_file_request(
-            #extra_args={'VersionId': 'versionid'},
+            extra_args={'VersionId': 'versionid'},
             expected_size=None
         )
         self.add_shutdown()
@@ -434,8 +434,7 @@ class TestGetObjectSubmitter(StubbedClientTest):
                 key=self.key,
                 temp_filename=self.temp_filename,
                 offset=0,
-                #extra_args={'VersionId': 'versionid'},
-                extra_args={},
+                extra_args={'VersionId': 'versionid'},
                 filename=self.filename,
             )
         ])
@@ -574,13 +573,13 @@ class TestGetObjectWorker(StubbedClientTest):
         self.assert_does_not_exist(self.final_filename)
 
     def test_run_with_extra_args(self):
-        self.add_get_object_job() #extra_args={'VersionId': 'versionid'})
+        self.add_get_object_job(extra_args={'VersionId': 'versionid'})
         self.add_shutdown()
         self.add_stubbed_get_object_response(
             expected_params={
                 'Bucket': self.bucket,
                 'Key': self.key,
-                #'VersionId': 'versionid'
+                'VersionId': 'versionid'
             }
         )
 

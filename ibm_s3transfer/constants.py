@@ -17,7 +17,7 @@ KB = 1024
 MB = KB * KB
 
 ALLOWED_DOWNLOAD_ARGS = [
-    #'VersionId',
+    'VersionId',
     'SSECustomerAlgorithm',
     'SSECustomerKey',
     'SSECustomerKeyMD5',
