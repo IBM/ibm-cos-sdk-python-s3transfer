@@ -174,7 +174,7 @@ To change the default configuration, use the :class:`ProcessTransferConfig`:
 Client Configuration
 ====================
 
-The process pool downloader creates ``botocore`` clients on your behalf. In
+The process pool downloader creates ``ibm_botocore`` clients on your behalf. In
 order to affect how the client is created, pass the keyword arguments
 that would have been used in the :meth:`ibm_botocore.Session.create_client` call:
 

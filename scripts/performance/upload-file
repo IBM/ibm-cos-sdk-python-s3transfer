@@ -16,7 +16,7 @@ To upload a file::
 """
 import argparse
 
-from botocore.session import get_session
+from ibm_botocore.session import get_session
 from s3transfer.manager import TransferManager
 
 

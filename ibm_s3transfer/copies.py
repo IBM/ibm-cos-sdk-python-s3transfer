@@ -63,6 +63,7 @@ class CopySubmissionTask(SubmissionTask):
         'RetentionExpirationDate',
         'RetentionLegalHoldId',
         'RetentionPeriod',
+        'TaggingDirective',
     ]
 
     COMPLETE_MULTIPART_ARGS = [

@@ -25,7 +25,7 @@ import tempfile
 import shutil
 import subprocess
 
-from botocore.session import get_session
+from ibm_botocore.session import get_session
 from s3transfer.manager import TransferManager
 
 

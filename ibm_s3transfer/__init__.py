@@ -602,16 +602,16 @@ class S3Transfer(object):
         'GrantWriteACL',
         'Metadata',
         'RequestPayer',
+        'RetentionExpirationDate',
+        'RetentionLegalHoldId',
+        'RetentionPeriod',
         'ServerSideEncryption',
         'StorageClass',
         'SSECustomerAlgorithm',
         'SSECustomerKey',
         'SSECustomerKeyMD5',
         'SSEKMSKeyId',
-        'RetentionExpirationDate',
-        'RetentionLegalHoldId',
-        'RetentionPeriod',
-
+        'Tagging',
     ]
 
     def __init__(self, client, config=None, osutil=None):
