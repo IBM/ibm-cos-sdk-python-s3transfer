@@ -300,7 +300,7 @@ class TestOSUtils(BaseUtilsTest):
         filename = 'myfile'
         self.assertIsNotNone(
             re.match(
-                '%s\.[0-9A-Fa-f]{8}$' % filename,
+                r'%s\.[0-9A-Fa-f]{8}$' % filename,
                 OSUtils().get_temp_filename(filename)
             )
         )
@@ -309,7 +309,7 @@ class TestOSUtils(BaseUtilsTest):
         filename = 'a'*255
         temp_filename = OSUtils().get_temp_filename(filename)
         self.assertLessEqual(len(temp_filename), 255)
-    
+
     def test_get_temp_filename_len_gt_255(self):
         filename = 'a'*280
         temp_filename = OSUtils().get_temp_filename(filename)
