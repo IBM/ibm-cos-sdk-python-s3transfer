@@ -8,7 +8,7 @@ ROOT = os.path.dirname(__file__)
 VERSION_RE = re.compile(r'''__version__ = ['"]([a-z0-9.]+)['"]''')
 
 requires = [
-    'ibm-cos-sdk-core==2.8.0',
+    'ibm-cos-sdk-core==2.9.0',
 ]
 
 
