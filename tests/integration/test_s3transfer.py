@@ -49,7 +49,7 @@ def md5_checksum(filename):
     return checksum.hexdigest()
 
 
-def random_bucket_name(prefix='boto3-transfer', num_chars=10):
+def random_bucket_name(prefix='ibm-boto3-transfer', num_chars=10):
     base = string.ascii_lowercase + string.digits
     random_bytes = bytearray(os.urandom(num_chars))
     return prefix + ''.join([base[b % len(base)] for b in random_bytes])
@@ -106,7 +106,7 @@ class FileCreator(object):
 
 
 class TestS3Transfers(BaseTransferManagerIntegTest):
-    """Tests for the high level s3transfer module."""
+    """Tests for the high level ibm_s3transfer module."""
 
     def create_s3_transfer(self, config=None):
         return ibm_s3transfer.S3Transfer(

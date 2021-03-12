@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Downloads using s3transfer.processpool.ProcessPoolDownloader
+Downloads using ibm_s3transfer.processpool.ProcessPoolDownloader
 
 Usage
 =====
@@ -19,8 +19,8 @@ To download a prefix recursively to a directory::
 import argparse
 import os
 
-import botocore.session
-from s3transfer.processpool import ProcessTransferConfig, ProcessPoolDownloader
+import ibm_botocore.session
+from ibm_s3transfer.processpool import ProcessTransferConfig, ProcessPoolDownloader
 
 MB = 1024 * 1024
 
@@ -41,7 +41,7 @@ def recursive_download(bucket, prefix, dirname, num_processes, mb_chunksize):
         multipart_chunksize=mb_chunksize * MB,
         max_request_processes=num_processes
     )
-    s3 = botocore.session.get_session().create_client('s3')
+    s3 = ibm_botocore.session.get_session().create_client('s3')
     with ProcessPoolDownloader(config=config) as downloader:
         paginator = s3.get_paginator('list_objects')
         for response in paginator.paginate(Bucket=bucket, Prefix=prefix):

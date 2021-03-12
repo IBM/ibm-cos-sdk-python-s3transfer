@@ -142,7 +142,7 @@ from ibm_s3transfer.exceptions import RetriesExceededError, S3UploadFailedError
 
 
 __author__ = 'IBM'
-__version__ = '2.9.0'
+__version__ = '2.10.0'
 
 
 class NullHandler(logging.Handler):
@@ -611,6 +611,7 @@ class S3Transfer(object):
         'SSECustomerKey',
         'SSECustomerKeyMD5',
         'SSEKMSKeyId',
+        'SSEKMSEncryptionContext',
         'Tagging',
     ]
 

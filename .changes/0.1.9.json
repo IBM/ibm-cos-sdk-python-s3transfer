@@ -1,7 +1,0 @@
-[
-  {
-    "category": "``TransferFuture``", 
-    "description": "Add support for setting exceptions on transfer future", 
-    "type": "feature"
-  }
-]

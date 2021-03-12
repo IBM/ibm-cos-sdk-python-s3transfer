@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Downloads a file using s3transfer. You can also chose how type of file that
+Downloads a file using ibm_s3transfer. You can also chose how type of file that
 is downloaded (i.e. filename, seekable, nonseekable).
 
 Usage
@@ -17,7 +17,7 @@ To download a file::
 import argparse
 
 from ibm_botocore.session import get_session
-from s3transfer.manager import TransferManager
+from ibm_s3transfer.manager import TransferManager
 
 
 class NonSeekableWriter(object):

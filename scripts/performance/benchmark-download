@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Benchmark the downloading of a file using s3transfer. You can also chose how
+Benchmark the downloading of a file using ibm_s3transfer. You can also chose how
 type of file that is downloaded (i.e. filename, seekable, nonseekable).
 
 Usage
@@ -26,7 +26,7 @@ import shutil
 import subprocess
 
 from ibm_botocore.session import get_session
-from s3transfer.manager import TransferManager
+from ibm_s3transfer.manager import TransferManager
 
 
 TEMP_FILE = 'temp'
