@@ -73,7 +73,7 @@ Additional parameters can be provided to the ``download_file`` method:
 
 * ``extra_args``: A dictionary containing any additional client arguments
   to include in the
-  `GetObject <https://ibm_botocore.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.get_object>`_
+  `GetObject <https://botocore.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.get_object>`_
   API request. For example:
 
   .. code:: python

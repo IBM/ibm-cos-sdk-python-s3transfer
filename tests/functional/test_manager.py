@@ -10,7 +10,7 @@
 # distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
-from io import RawIOBase
+from io import BytesIO
 from ibm_botocore.awsrequest import create_request_object
 import mock
 
@@ -27,7 +27,7 @@ class ArbitraryException(Exception):
     pass
 
 
-class SignalTransferringBody(RawIOBase):
+class SignalTransferringBody(BytesIO):
     """A mocked body with the ability to signal when transfers occur"""
     def __init__(self):
         super(SignalTransferringBody, self).__init__()
@@ -172,3 +172,13 @@ class TestTransferManager(StubbedClientTest):
         config = TransferConfig()
         manager = TransferManager(self.client, config)
         self.assertIs(manager.config, config)
+
+    def test_can_disable_bucket_validation(self):
+        s3_object_lambda_arn = (
+            'arn:aws:s3-object-lambda:us-west-2:123456789012:'
+            'accesspoint:my-accesspoint'
+        )
+        config = TransferConfig()
+        manager = TransferManager(self.client, config)
+        manager.VALIDATE_SUPPORTED_BUCKET_VALUES = False
+        manager.delete(s3_object_lambda_arn, 'my-key')

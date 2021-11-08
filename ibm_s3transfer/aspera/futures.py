@@ -16,6 +16,7 @@ import logging
 import os
 import threading
 import time
+import warnings
 
 from ibm_s3transfer.aspera.exceptions import *
 from ibm_s3transfer.futures import TransferMeta
@@ -24,11 +25,13 @@ from ibm_s3transfer.compat import MAXINT
 
 try:
     from cos_aspera import faspmanager2
+    warnings.warn("Using Aspera through the COS SDK is deprecated. Refer to the project readme: https://github.com/IBM/ibm-cos-sdk-python")
     faspmanager2.configureAsperaLocation(os.path.dirname(faspmanager2.__file__))
 except ImportError:
     raise ImportError("Aspera SDK not installed")
 
 logger = logging.getLogger("ibmcos.aspera")
+logger.warning("Using Aspera through the COS SDK is deprecated. Refer to the project readme: https://github.com/IBM/ibm-cos-sdk-python")
 
 
 class enumAsperaMsgType():

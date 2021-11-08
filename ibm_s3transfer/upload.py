@@ -85,8 +85,8 @@ class InterruptReader(object):
             raise self._transfer_coordinator.exception
         return self._fileobj.read(amount)
 
-    def seek(self, where):
-        self._fileobj.seek(where)
+    def seek(self, where, whence=0):
+        self._fileobj.seek(where, whence)
 
     def tell(self):
         return self._fileobj.tell()
@@ -490,6 +490,7 @@ class UploadSubmissionTask(SubmissionTask):
         'SSECustomerAlgorithm',
         'SSECustomerKeyMD5',
         'RequestPayer',
+        'ExpectedBucketOwner'
     ]
 
     COMPLETE_MULTIPART_ARGS = [
@@ -497,6 +498,7 @@ class UploadSubmissionTask(SubmissionTask):
         'RetentionExpirationDate',
         'RetentionLegalHoldId',
         'RetentionPeriod',
+        'ExpectedBucketOwner'
     ]
 
     CREATE_MULTIPART_ARGS_BLACKLIST = [

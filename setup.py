@@ -10,9 +10,8 @@ VERSION_RE = re.compile(r'''__version__ = ['"]([a-z0-9.]+)['"]''')
 
 
 requires = [
-    'ibm-cos-sdk-core==2.10.0',
+    'ibm-cos-sdk-core==2.11.0',
 ]
-
 
 def get_version():
     init = open(os.path.join(ROOT, 'ibm_s3transfer', '__init__.py')).read()
@@ -30,10 +29,10 @@ setup(
     url='https://github.com/IBM/ibm-cos-sdk-python-s3transfer',
     packages=find_packages(exclude=['tests*']),
     include_package_data=True,
-    python_requires='~=3.6',
     install_requires=requires,
     license="Apache License 2.0",
-    classifiers=(
+    python_requires=">= 3.6",
+    classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Natural Language :: English',
@@ -44,5 +43,5 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
-    ),
+    ],
 )
