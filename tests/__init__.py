@@ -10,45 +10,48 @@
 # distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
-import io
 import hashlib
+import io
 import math
 import os
 import platform
 import shutil
 import string
 import tempfile
+import unittest
+from unittest import mock  # noqa: F401
 
-try:
-    import unittest2 as unittest
-except ImportError:
-    import unittest
 import ibm_botocore.session
 from ibm_botocore.stub import Stubber
-from ibm_botocore.compat import six
 
+from ibm_s3transfer.futures import (
+    IN_MEMORY_DOWNLOAD_TAG,
+    IN_MEMORY_UPLOAD_TAG,
+    BoundedExecutor,
+    NonThreadedExecutor,
+    TransferCoordinator,
+    TransferFuture,
+    TransferMeta,
+)
 from ibm_s3transfer.manager import TransferConfig
-from ibm_s3transfer.futures import IN_MEMORY_UPLOAD_TAG
-from ibm_s3transfer.futures import IN_MEMORY_DOWNLOAD_TAG
-from ibm_s3transfer.futures import TransferCoordinator
-from ibm_s3transfer.futures import TransferMeta
-from ibm_s3transfer.futures import TransferFuture
-from ibm_s3transfer.futures import BoundedExecutor
-from ibm_s3transfer.futures import NonThreadedExecutor
 from ibm_s3transfer.subscribers import BaseSubscriber
-from ibm_s3transfer.utils import OSUtils
-from ibm_s3transfer.utils import CallArgs
-from ibm_s3transfer.utils import TaskSemaphore
-from ibm_s3transfer.utils import SlidingWindowSemaphore
-
+from ibm_s3transfer.utils import (
+    CallArgs,
+    OSUtils,
+    SlidingWindowSemaphore,
+    TaskSemaphore,
+)
 
 ORIGINAL_EXECUTOR_CLS = BoundedExecutor.EXECUTOR_CLS
+
+# IBM Unsupported
 # Detect if CRT is available for use
-try:
-    import awscrt.s3
-    HAS_CRT = True
-except ImportError:
-    HAS_CRT = False
+# try:
+#     import awscrt.s3  # noqa: F401
+
+#     HAS_CRT = True
+# except ImportError:
+#     HAS_CRT = False
 
 
 def setup_package():
@@ -66,13 +69,15 @@ def is_serial_implementation():
 
 def assert_files_equal(first, second):
     if os.path.getsize(first) != os.path.getsize(second):
-        raise AssertionError("Files are not equal: %s, %s" % (first, second))
+        raise AssertionError(f"Files are not equal: {first}, {second}")
     first_md5 = md5_checksum(first)
     second_md5 = md5_checksum(second)
     if first_md5 != second_md5:
         raise AssertionError(
-            "Files are not equal: %s(md5=%s) != %s(md5=%s)" % (
-                first, first_md5, second, second_md5))
+            "Files are not equal: {}(md5={}) != {}(md5={})".format(
+                first, first_md5, second, second_md5
+            )
+        )
 
 
 def md5_checksum(filename):
@@ -99,27 +104,32 @@ def skip_if_windows(reason):
             self.assertEqual(...)
 
     """
+
     def decorator(func):
         return unittest.skipIf(
-            platform.system() not in ['Darwin', 'Linux'], reason)(func)
+            platform.system() not in ['Darwin', 'Linux'], reason
+        )(func)
+
     return decorator
 
 
 def skip_if_using_serial_implementation(reason):
     """Decorator to skip tests when running as the serial implementation"""
+
     def decorator(func):
-        return unittest.skipIf(
-            is_serial_implementation(), reason)(func)
+        return unittest.skipIf(is_serial_implementation(), reason)(func)
+
     return decorator
 
 
-def requires_crt(cls, reason=None):
-    if reason is None:
-        reason = "Test requires awscrt to be installed."
-    return unittest.skipIf(not HAS_CRT, reason)(cls)
+# IBM Unsupported
+# def requires_crt(cls, reason=None):
+#     if reason is None:
+#         reason = "Test requires awscrt to be installed."
+#     return unittest.skipIf(not HAS_CRT, reason)(cls)
 
 
-class StreamWithError(object):
+class StreamWithError:
     """A wrapper to simulate errors while reading from a stream
 
     :param stream: The underlying stream to read from
@@ -142,7 +152,7 @@ class StreamWithError(object):
         return self._stream.read(n)
 
 
-class FileSizeProvider(object):
+class FileSizeProvider:
     def __init__(self, file_size):
         self.file_size = file_size
 
@@ -150,7 +160,7 @@ class FileSizeProvider(object):
         future.meta.provide_transfer_size(self.file_size)
 
 
-class FileCreator(object):
+class FileCreator:
     def __init__(self):
         self.rootdir = tempfile.mkdtemp()
 
@@ -204,18 +214,17 @@ class RecordingOSUtils(OSUtils):
     """An OSUtil abstraction that records openings and renamings"""
 
     def __init__(self):
-        super(RecordingOSUtils, self).__init__()
+        super().__init__()
         self.open_records = []
         self.rename_records = []
 
     def open(self, filename, mode):
         self.open_records.append((filename, mode))
-        return super(RecordingOSUtils, self).open(filename, mode)
+        return super().open(filename, mode)
 
     def rename_file(self, current_filename, new_filename):
         self.rename_records.append((current_filename, new_filename))
-        super(RecordingOSUtils, self).rename_file(
-            current_filename, new_filename)
+        super().rename_file(current_filename, new_filename)
 
 
 class RecordingSubscriber(BaseSubscriber):
@@ -247,7 +256,7 @@ class TransferCoordinatorWithInterrupt(TransferCoordinator):
         raise KeyboardInterrupt()
 
 
-class RecordingExecutor(object):
+class RecordingExecutor:
     """A wrapper on an executor to record calls made to submit()
 
     You can access the submissions property to receive a list of dictionaries
@@ -266,13 +275,7 @@ class RecordingExecutor(object):
 
     def submit(self, task, tag=None, block=True):
         future = self._executor.submit(task, tag, block)
-        self.submissions.append(
-            {
-                'task': task,
-                'tag': tag,
-                'block': block
-            }
-        )
+        self.submissions.append({'task': task, 'tag': tag, 'block': block})
         return future
 
     def shutdown(self):
@@ -284,8 +287,11 @@ class StubbedClientTest(unittest.TestCase):
         self.session = ibm_botocore.session.get_session()
         self.region = 'us-west-2'
         self.client = self.session.create_client(
-            's3', self.region, aws_access_key_id='foo',
-            aws_secret_access_key='bar')
+            's3',
+            self.region,
+            aws_access_key_id='foo',
+            aws_secret_access_key='bar',
+        )
         self.stubber = Stubber(self.client)
         self.stubber.activate()
 
@@ -297,7 +303,7 @@ class StubbedClientTest(unittest.TestCase):
             'service_name': 's3',
             'region_name': self.region,
             'aws_access_key_id': 'foo',
-            'aws_secret_access_key': 'bar'
+            'aws_secret_access_key': 'bar',
         }
         client_kwargs.update(override_client_kwargs)
         self.client = self.session.create_client(**client_kwargs)
@@ -307,7 +313,7 @@ class StubbedClientTest(unittest.TestCase):
 
 class BaseTaskTest(StubbedClientTest):
     def setUp(self):
-        super(BaseTaskTest, self).setUp()
+        super().setUp()
         self.transfer_coordinator = TransferCoordinator()
 
     def get_task(self, task_cls, **kwargs):
@@ -317,14 +323,13 @@ class BaseTaskTest(StubbedClientTest):
 
     def get_transfer_future(self, call_args=None):
         return TransferFuture(
-            meta=TransferMeta(call_args),
-            coordinator=self.transfer_coordinator
+            meta=TransferMeta(call_args), coordinator=self.transfer_coordinator
         )
 
 
 class BaseSubmissionTaskTest(BaseTaskTest):
     def setUp(self):
-        super(BaseSubmissionTaskTest, self).setUp()
+        super().setUp()
         self.config = TransferConfig()
         self.osutil = OSUtils()
         self.executor = BoundedExecutor(
@@ -332,12 +337,12 @@ class BaseSubmissionTaskTest(BaseTaskTest):
             1,
             {
                 IN_MEMORY_UPLOAD_TAG: TaskSemaphore(10),
-                IN_MEMORY_DOWNLOAD_TAG: SlidingWindowSemaphore(10)
-            }
+                IN_MEMORY_DOWNLOAD_TAG: SlidingWindowSemaphore(10),
+            },
         )
 
     def tearDown(self):
-        super(BaseSubmissionTaskTest, self).tearDown()
+        super().tearDown()
         self.executor.shutdown()
 
 
@@ -348,6 +353,7 @@ class BaseGeneralInterfaceTest(StubbedClientTest):
     the various tests that all TransferManager method must pass from a
     functionality standpoint.
     """
+
     __test__ = False
 
     def manager(self):
@@ -366,7 +372,8 @@ class BaseGeneralInterfaceTest(StubbedClientTest):
     def create_invalid_extra_args(self):
         """A value for extra_args that will cause validation errors"""
         raise NotImplementedError(
-            'create_invalid_extra_args is not implemented')
+            'create_invalid_extra_args is not implemented'
+        )
 
     def create_stubbed_responses(self):
         """A list of stubbed responses that will cause the request to succeed
@@ -377,7 +384,8 @@ class BaseGeneralInterfaceTest(StubbedClientTest):
             [{'method': 'put_object', 'service_response': {}}]
         """
         raise NotImplementedError(
-            'create_stubbed_responses is not implemented')
+            'create_stubbed_responses is not implemented'
+        )
 
     def create_expected_progress_callback_info(self):
         """A list of kwargs expected to be passed to each progress callback
@@ -397,7 +405,8 @@ class BaseGeneralInterfaceTest(StubbedClientTest):
         values.
         """
         raise NotImplementedError(
-            'create_expected_progress_callback_info is not implemented')
+            'create_expected_progress_callback_info is not implemented'
+        )
 
     def _setup_default_stubbed_responses(self):
         for stubbed_response in self.create_stubbed_responses():
@@ -451,10 +460,10 @@ class BaseGeneralInterfaceTest(StubbedClientTest):
         self.assertEqual(future.meta.transfer_id, 1)
 
     def test_invalid_extra_args(self):
-        with self.assertRaisesRegexp(ValueError, 'Invalid extra_args'):
+        with self.assertRaisesRegex(ValueError, 'Invalid extra_args'):
             self.method(
                 extra_args=self.create_invalid_extra_args(),
-                **self.create_call_kwargs()
+                **self.create_call_kwargs(),
             )
 
     def test_for_callback_kwargs_correctness(self):
@@ -463,7 +472,8 @@ class BaseGeneralInterfaceTest(StubbedClientTest):
 
         subscriber = RecordingSubscriber()
         future = self.method(
-            subscribers=[subscriber], **self.create_call_kwargs())
+            subscribers=[subscriber], **self.create_call_kwargs()
+        )
         # We call shutdown instead of result on future because the future
         # could be finished but the done callback could still be going.
         # The manager's shutdown method ensures everything completes.
@@ -482,8 +492,8 @@ class BaseGeneralInterfaceTest(StubbedClientTest):
 
 class NonSeekableReader(io.RawIOBase):
     def __init__(self, b=b''):
-        super(NonSeekableReader, self).__init__()
-        self._data = six.BytesIO(b)
+        super().__init__()
+        self._data = io.BytesIO(b)
 
     def seekable(self):
         return False
@@ -505,7 +515,7 @@ class NonSeekableReader(io.RawIOBase):
 
 class NonSeekableWriter(io.RawIOBase):
     def __init__(self, fileobj):
-        super(NonSeekableWriter, self).__init__()
+        super().__init__()
         self._fileobj = fileobj
 
     def seekable(self):
