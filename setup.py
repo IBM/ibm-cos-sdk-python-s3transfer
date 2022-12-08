@@ -9,7 +9,7 @@ VERSION_RE = re.compile(r'''__version__ = ['"]([a-z0-9.]+)['"]''')
 
 
 requires = [
-    'ibm-cos-sdk-core==2.12.0',
+    'ibm-cos-sdk-core==2.12.1',
 ]
 
 def get_version():
