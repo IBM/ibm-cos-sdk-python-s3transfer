@@ -1,7 +1,7 @@
 psutil>=5.6.6,<5.6.8
 tabulate==0.7.5
 coverage==5.5
-wheel==0.37.0
+wheel==0.38.1
 
 # Pytest specific deps
 pytest==7.2.0
