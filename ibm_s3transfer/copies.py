@@ -374,4 +374,5 @@ class CopyPartTask(Task):
         for callback in callbacks:
             callback(bytes_transferred=size)
         etag = response['CopyPartResult']['ETag']
-        return {'ETag': etag, 'PartNumber': part_number}
+        part_metadata = {'ETag': etag, 'PartNumber': part_number}
+        return part_metadata

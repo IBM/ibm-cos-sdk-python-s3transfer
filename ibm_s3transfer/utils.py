@@ -22,6 +22,7 @@ import threading
 from collections import defaultdict
 
 from ibm_botocore.exceptions import IncompleteReadError, ReadTimeoutError
+from ibm_botocore.httpchecksum import AwsChunkedWrapper
 
 from ibm_s3transfer.compat import SOCKET_ERROR, fallocate, rename_file
 
@@ -54,10 +55,12 @@ def signal_not_transferring(request, operation_name, **kwargs):
 
 
 def signal_transferring(request, operation_name, **kwargs):
-    if operation_name in ['PutObject', 'UploadPart'] and hasattr(
-        request.body, 'signal_transferring'
-    ):
-        request.body.signal_transferring()
+    if operation_name in ['PutObject', 'UploadPart']:
+        body = request.body
+        if isinstance(body, AwsChunkedWrapper):
+            body = getattr(body, '_raw', None)
+        if hasattr(body, 'signal_transferring'):
+            body.signal_transferring()
 
 
 def calculate_num_parts(size, part_size):
