@@ -9,7 +9,7 @@ VERSION_RE = re.compile(r'''__version__ = ['"]([a-z0-9.]+)['"]''')
 
 
 requires = [
-    'ibm-cos-sdk-core==2.13.6',
+    'ibm-cos-sdk-core==2.14.0',
 ]
 
 def get_version():
@@ -44,5 +44,6 @@ setup(
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
     ],
 )
