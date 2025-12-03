@@ -22,9 +22,10 @@ import threading
 from collections import defaultdict
 
 from ibm_botocore.exceptions import IncompleteReadError, ReadTimeoutError
-from ibm_botocore.httpchecksum import AwsChunkedWrapper
+from ibm_botocore.httpchecksum import DEFAULT_CHECKSUM_ALGORITHM, AwsChunkedWrapper
 
 from ibm_s3transfer.compat import SOCKET_ERROR, fallocate, rename_file
+from ibm_s3transfer.constants import FULL_OBJECT_CHECKSUM_ARGS
 
 MAX_PARTS = 10000
 # The maximum file size you can upload via S3 per request.
@@ -142,20 +143,27 @@ def invoke_progress_callbacks(callbacks, bytes_transferred):
             callback(bytes_transferred=bytes_transferred)
 
 
-def get_filtered_dict(original_dict, whitelisted_keys):
-    """Gets a dictionary filtered by whitelisted keys
+def get_filtered_dict(
+    original_dict, whitelisted_keys=None, blocklisted_keys=None
+):
+    """Gets a dictionary filtered by whitelisted and blocklisted keys.
 
     :param original_dict: The original dictionary of arguments to source keys
         and values.
     :param whitelisted_key: A list of keys to include in the filtered
         dictionary.
+    :param blocklisted_key: A list of keys to exclude in the filtered
+        dictionary.
 
     :returns: A dictionary containing key/values from the original dictionary
-        whose key was included in the whitelist
+        whose key was included in the whitelist and/or not included in the
+        blocklist.
     """
     filtered_dict = {}
     for key, value in original_dict.items():
-        if key in whitelisted_keys:
+        if (whitelisted_keys and key in whitelisted_keys) or (
+            blocklisted_keys and key not in blocklisted_keys
+        ):
             filtered_dict[key] = value
     return filtered_dict
 
@@ -803,3 +811,8 @@ class ChunksizeAdjuster:
             )
 
         return chunksize
+def set_default_checksum_algorithm(extra_args):
+    """Set the default algorithm to CRC32 if not specified by the user."""
+    if any(checksum in extra_args for checksum in FULL_OBJECT_CHECKSUM_ARGS):
+        return
+    extra_args.setdefault("ChecksumAlgorithm", DEFAULT_CHECKSUM_ALGORITHM)

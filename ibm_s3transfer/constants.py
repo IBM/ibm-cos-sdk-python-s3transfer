@@ -17,8 +17,7 @@ MB = KB * KB
 GB = MB * KB
 
 ALLOWED_DOWNLOAD_ARGS = [
-    # IBM Unsupported
-    # 'ChecksumMode',
+    'ChecksumMode',
     'VersionId',
     'SSECustomerAlgorithm',
     'SSECustomerKey',
@@ -27,5 +26,13 @@ ALLOWED_DOWNLOAD_ARGS = [
     'ExpectedBucketOwner',
 ]
 
-USER_AGENT = 'ibm_s3transfer/%s' % ibm_s3transfer.__version__
-PROCESS_USER_AGENT = '%s processpool' % USER_AGENT
+FULL_OBJECT_CHECKSUM_ARGS = [
+    'ChecksumCRC32',
+    'ChecksumCRC32C',
+    'ChecksumCRC64NVME',
+    'ChecksumSHA1',
+    'ChecksumSHA256',
+]
+
+USER_AGENT = f'ibm_s3transfer/{ibm_s3transfer.__version__}'
+PROCESS_USER_AGENT = f'{USER_AGENT} processpool'

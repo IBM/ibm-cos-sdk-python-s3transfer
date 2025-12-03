@@ -14,6 +14,7 @@ import math
 from io import BytesIO
 
 from ibm_s3transfer.compat import readable, seekable
+from ibm_s3transfer.constants import FULL_OBJECT_CHECKSUM_ARGS
 from ibm_s3transfer.futures import IN_MEMORY_UPLOAD_TAG
 from ibm_s3transfer.tasks import (
     CompleteMultipartUploadTask,
@@ -512,9 +513,12 @@ class UploadNonSeekableInputManager(UploadInputManager):
 class UploadSubmissionTask(SubmissionTask):
     """Task for submitting tasks to execute an upload"""
 
+    PUT_OBJECT_BLOCKLIST = ["ChecksumType", "MpuObjectSize"]
+
+    CREATE_MULTIPART_BLOCKLIST = FULL_OBJECT_CHECKSUM_ARGS + ["MpuObjectSize"]
+
     UPLOAD_PART_ARGS = [
-        # IBM Unsupported
-        # 'ChecksumAlgorithm',
+        'ChecksumAlgorithm',
         'SSECustomerKey',
         'SSECustomerAlgorithm',
         'SSECustomerKeyMD5',
@@ -523,12 +527,15 @@ class UploadSubmissionTask(SubmissionTask):
     ]
 
     COMPLETE_MULTIPART_ARGS = [
+        'SSECustomerKey',
+        'SSECustomerAlgorithm',
+        'SSECustomerKeyMD5',
         'RequestPayer',
-        'RetentionExpirationDate',
-        'RetentionLegalHoldId',
-        'RetentionPeriod',
-        'ExpectedBucketOwner'
-    ]
+        'ExpectedBucketOwner',
+        'ChecksumType',
+        'MpuObjectSize',
+    ] + FULL_OBJECT_CHECKSUM_ARGS
+
 
     CREATE_MULTIPART_ARGS_BLACKLIST = [
         'RetentionExpirationDate',
@@ -558,9 +565,7 @@ class UploadSubmissionTask(SubmissionTask):
             if upload_manager_cls.is_compatible(fileobj):
                 return upload_manager_cls
         raise RuntimeError(
-            'Input {} of type: {} is not supported.'.format(
-                fileobj, type(fileobj)
-            )
+            f'Input {fileobj} of type: {type(fileobj)} is not supported.'
         )
 
     def _submit(
@@ -631,6 +636,10 @@ class UploadSubmissionTask(SubmissionTask):
     ):
         call_args = transfer_future.meta.call_args
 
+        put_object_extra_args = self._extra_put_object_args(
+            call_args.extra_args
+        )
+
         # Get any tags that need to be associated to the put object task
         put_object_tag = self._get_upload_task_tag(
             upload_input_manager, 'put_object'
@@ -648,7 +657,7 @@ class UploadSubmissionTask(SubmissionTask):
                     ),
                     'bucket': call_args.bucket,
                     'key': call_args.key,
-                    'extra_args': call_args.extra_args,
+                    'extra_args': put_object_extra_args,
                 },
                 is_final=True,
             ),
@@ -666,10 +675,18 @@ class UploadSubmissionTask(SubmissionTask):
     ):
         call_args = transfer_future.meta.call_args
 
-        # Submit the request to create a multipart upload and make sure it
-        # does not include any of the arguments used for copy part.
-        create_multipart_extra_args = {arg: val for arg, val in call_args.extra_args.items()
-                                       if arg not in self.CREATE_MULTIPART_ARGS_BLACKLIST}
+        # When a user provided checksum is passed, set "ChecksumType" to "FULL_OBJECT"
+        # and "ChecksumAlgorithm" to the related algorithm.
+        for checksum in FULL_OBJECT_CHECKSUM_ARGS:
+            if checksum in call_args.extra_args:
+                call_args.extra_args["ChecksumType"] = "FULL_OBJECT"
+                call_args.extra_args["ChecksumAlgorithm"] = checksum.replace(
+                    "Checksum", ""
+                )
+
+        create_multipart_extra_args = self._extra_create_multipart_args(
+            call_args.extra_args
+        )
 
         # Submit the request to create a multipart upload.
         create_multipart_future = self._transfer_coordinator.submit(
@@ -754,6 +771,16 @@ class UploadSubmissionTask(SubmissionTask):
     def _extra_complete_multipart_args(self, extra_args):
         return get_filtered_dict(extra_args, self.COMPLETE_MULTIPART_ARGS)
 
+    def _extra_create_multipart_args(self, extra_args):
+        return get_filtered_dict(
+            extra_args, blocklisted_keys=self.CREATE_MULTIPART_BLOCKLIST
+        )
+
+    def _extra_put_object_args(self, extra_args):
+        return get_filtered_dict(
+            extra_args, blocklisted_keys=self.PUT_OBJECT_BLOCKLIST
+        )
+
     def _get_upload_task_tag(self, upload_input_manager, operation_name):
         tag = None
         if upload_input_manager.stores_body_in_memory(operation_name):
@@ -813,10 +840,9 @@ class UploadPartTask(Task):
             )
         etag = response['ETag']
         part_metadata = {'ETag': etag, 'PartNumber': part_number}
-        # IBM Unsupported
-        # if 'ChecksumAlgorithm' in extra_args:
-        #     algorithm_name = extra_args['ChecksumAlgorithm'].upper()
-        #     checksum_member = f'Checksum{algorithm_name}'
-        #     if checksum_member in response:
-        #         part_metadata[checksum_member] = response[checksum_member]
+        if 'ChecksumAlgorithm' in extra_args:
+            algorithm_name = extra_args['ChecksumAlgorithm'].upper()
+            checksum_member = f'Checksum{algorithm_name}'
+            if checksum_member in response:
+                part_metadata[checksum_member] = response[checksum_member]
         return part_metadata

@@ -42,6 +42,7 @@ from ibm_s3transfer.utils import (
     get_filtered_dict,
     invoke_progress_callbacks,
     random_file_extension,
+    set_default_checksum_algorithm,
 )
 from tests import NonSeekableWriter, RecordingSubscriber, mock, unittest
 
